@@ -1,11 +1,113 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
-    <head>
-        <title>MERCHANT'S GUIDE TO THE GALAXY</title>
-    </head>
-    <body>
-        <h1>Welcome!</h1>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="#{app.title}"></title>
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body>
+	<div class="container text-center">
+		<h1 th:text="#{app.title}"></h1>
+		<div class="button-group" sec:authorize="!isAuthenticated()">
+			<a class="btn btn-lg btn-primary" th:href="@{/login}" role="button">
+                <label th:text="#{app.login}"></label>
+            </a>
+			<a class="btn btn-lg btn-primary" th:href="@{/register}" role="button">
+                <label th:text="#{app.register}"></label>
+            </a>
+		</div>
+		<div class="button-group" sec:authorize="isAuthenticated()">
+        	<h2 th:text="#{app.welcome(${username})}"></h2>
+			<a class="btn btn-lg btn-primary" th:href="@{/logout}" role="button">
+                <label th:text="#{app.logout}"></label>
+            </a>
+		    
+		    <div id="dialogue-page">
+				<div class="dialogue-container">
+					<hr/>
+					<div class="dialogue-header">
+        				<h2 th:text="#{app.dialogue}"></h2>
+        				<span th:text="#{app.help}"></span>
+					</div>
+					<ul id="messages" class="text-left">
+		
+					</ul>
+					<hr/>
+					<form id="dialogueForm" name="dialogueForm" th:action="@{/main}" method="post" th:onsubmit="sendMessage(event)">
+						<div class="form-group">
+							<div class="input-group clearfix">
+								<input type="text" id="message" name="q"
+									autocomplete="off" autofocus
+									class="form-control" />
+									&nbsp;
+								<button type="submit"
+                                    class="btn btn-lg btn-primary">
+                                	<label th:text="#{app.submit}"></label>
+                            	</button>
+									&nbsp;
+								<button type="reset" th:onclick="clearMessages(event)"
+                                    class="btn btn-lg btn-primary">
+                                	<label th:text="#{app.clear}"></label>
+                            	</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+<script th:inline="javascript">
+function sendMessage(event) {
+	var message = document.getElementById('message');
+	var content = message.value.trim();
+	if (content) {
+	    var frm = $('#dialogueForm');
+        $.ajax({
+            type: frm.attr('method'),
+            url: frm.attr('action'),
+            data: frm.serialize(),
+            success: function(response) {
+				message.value = '';
+				onResponse(content, response);
+            },
+            error: function(data) {
+                alert(/*[[#{app.errormessage}]]*/);
+            }
+        });
+	} else alert(/*[[#{app.nomessage}]]*/);
+	event.preventDefault();
+	message.scrollIntoView();
+	message.focus();
+}
+function onResponse(message, response) {
+	var messageElement = document.createElement('li');
 
-        <p>Click <a th:href="@{/convert}">here</a> to start your personal intergalactic unit converter!</p>
-    </body>
+	messageElement.classList.add('message-data');
+
+	var element = document.createElement('i');
+	var text = document.createTextNode(message);
+	element.appendChild(text);
+
+	messageElement.appendChild(element);
+
+
+	var textElement = document.createElement('p');
+	var messageText = document.createTextNode(response);
+	textElement.appendChild(messageText);
+
+	messageElement.appendChild(textElement);
+
+	document.querySelector('#messages').appendChild(messageElement);
+	document.querySelector('#messages').scrollTop = document
+			.querySelector('#messages').scrollHeight;
+
+}
+function clearMessages(event)  {
+	window.location.reload();
+}
+</script>
+<noscript>JavaScript required</noscript>
+</body>
 </html>
