@@ -16,7 +16,9 @@
 	<properties>
 		<java.version>19</java.version>
 		<testcontainers.version>1.17.6</testcontainers.version>
+		<start-class>hu.kispitye.itemis.ItemisApplication</start-class>
 	</properties>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -72,6 +74,11 @@
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+		   <groupId>org.springframework.boot</groupId>
+		   <artifactId>spring-boot-starter-tomcat</artifactId>
+		   <scope>provided</scope>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -86,11 +93,23 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+				 <executions>
+				    <execution>
+				      <id>repackage</id>
+				      <goals>
+				        <goal>repackage</goal>
+				      </goals>
+				      <configuration>
+				        <skip>true</skip>
+				      </configuration>
+				    </execution>
+				</executions>
+  			</plugin>
 		</plugins>
 	</build>
 	<repositories>

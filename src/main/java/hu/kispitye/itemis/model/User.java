@@ -1,6 +1,8 @@
 package hu.kispitye.itemis.model;
 
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import hu.kispitye.itemis.model.transfer.UserData;
 import hu.kispitye.itemis.security.WebSecurity;
@@ -24,6 +26,20 @@ public class User {
 	@Convert(converter = UserData.LocaleConverter.class)
 	private Locale locale;
 
+	@OneToMany(
+		mappedBy = "user", 
+	    cascade = CascadeType.ALL, 
+	    orphanRemoval = true
+	)
+	private Set<Unit> units = new HashSet<>();
+	
+	@OneToMany(
+			mappedBy = "user", 
+		    cascade = CascadeType.ALL, 
+		    orphanRemoval = true
+		)
+	private Set<Item> items = new HashSet<>();
+		
 	User() {}
 	
 	public User(String name, String pwd) {
@@ -62,4 +78,45 @@ public class User {
 		return this;
 	}
 	
+	public Set<Unit> getUnits() {
+		return units;
+	}
+	
+	public void addUnit(Unit unit) {
+		units.add(unit);
+		unit.setUser(this);
+	}
+
+	public void removeUnit(Unit unit) {
+		units.remove(unit);
+		unit.setUser(null);
+	}
+	
+	public Set<Item> getItems() {
+		return items;
+	}
+	
+	public void addItem(Item item) {
+		items.add(item);
+		item.setUser(this);
+	}
+	
+	@Override
+	public String toString() {
+		return "["+getName()+"]";
+	}
+
+	@Override
+	public boolean equals(Object u) {
+		if (!(u instanceof User)) return false;
+		if (u==this) return true;
+		User user=(User)u;
+		return getName().equalsIgnoreCase(user.getName());
+	}
+	
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}
+
 }
