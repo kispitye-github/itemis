@@ -1,5 +1,7 @@
 package hu.kispitye.itemis.service.impl;
 
+import java.util.Locale;
+
 import org.springframework.stereotype.Service;
 
 import hu.kispitye.itemis.model.User;
@@ -16,8 +18,8 @@ public class UserServiceImpl implements UserService {
     }
 	
 	@Override
-	public User createUser(String name, String pwd) {
-		return userRepository.save(new User(name, pwd));
+	public User createUser(String name, String pwd, Locale locale) {
+		return userRepository.save(new User(name, pwd).setLocale(locale));
 	}
 
 	@Override

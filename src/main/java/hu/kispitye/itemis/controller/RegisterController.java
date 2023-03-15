@@ -9,6 +9,8 @@ import hu.kispitye.itemis.model.transfer.UserData;
 import hu.kispitye.itemis.security.WebSecurity;
 import hu.kispitye.itemis.service.UserService;
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -30,7 +32,7 @@ public class RegisterController {
    
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-    	if (WebSecurity.getUserName()!=null) return "redirect:/";
+    	if (WebSecurity.getUser()!=null) return "redirect:/";
         model.addAttribute("user", new UserData());
         return "register";
     }
@@ -38,8 +40,9 @@ public class RegisterController {
     @PostMapping("/register")
     public String registration(@ModelAttribute("user") UserData userData,
                                BindingResult result,
-                               Model model) {
-    	if (WebSecurity.getUserName()!=null) return "redirect:/";
+                               Model model,
+                               Locale locale) {
+    	if (WebSecurity.getUser()!=null) return "redirect:/";
         User existingUser = userService.findUser(userData.name);
 
         if(existingUser != null){
@@ -49,12 +52,12 @@ public class RegisterController {
             result.rejectValue("pwd", "pwd.mismatch",messageSource.getMessage("pwd.mismatch", null, null));
         } 
 
-        if(result.hasErrors()){
+        if (result.hasErrors()){
             model.addAttribute("user", userData);
             return "register";
         }
 
-        userService.createUser(userData.name, userData.pwd);
+        userService.createUser(userData.name, userData.pwd, locale);
         return "redirect:register?success";
     }
 }

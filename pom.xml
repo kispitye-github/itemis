@@ -18,7 +18,7 @@
 		<testcontainers.version>1.17.6</testcontainers.version>
 		<start-class>hu.kispitye.itemis.ItemisApplication</start-class>
 	</properties>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -98,17 +98,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-				 <executions>
-				    <execution>
-				      <id>repackage</id>
-				      <goals>
-				        <goal>repackage</goal>
-				      </goals>
-				      <configuration>
-				        <skip>true</skip>
-				      </configuration>
-				    </execution>
-				</executions>
   			</plugin>
 		</plugins>
 	</build>

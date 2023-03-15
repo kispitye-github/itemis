@@ -23,9 +23,10 @@ public class RequestAnalyzer {
 	public static final String ERROR_NUMERAL_FORMAT="error.numeral.format";
 	
 	private MessageSource messageSource;
+	private Locale locale;
 	
 	private String getMessage(String key, Object... args) {
-		return messageSource.getMessage(key, args, null);
+		return messageSource.getMessage(key, args, locale);
 	}
 	
 	private List<String> tokens;
@@ -84,8 +85,9 @@ public class RequestAnalyzer {
 		return result;
 	}
 	
-	public RequestAnalyzer(String q, MessageSource messageSource) {
+	public RequestAnalyzer(String q, MessageSource messageSource, Locale locale) {
 		this.messageSource = messageSource;
+		this.locale = locale;
     	tokens = Collections.list(new StringTokenizer(q)).stream().map(token -> (String)token).collect(Collectors.toList());
     	question = getIsQuestion();
     	if (!question) definition = getIsDefinition();

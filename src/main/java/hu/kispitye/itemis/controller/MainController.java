@@ -43,8 +43,10 @@ public class MainController {
 	@Autowired
 	private MessageSource messageSource;
 	
+	private Locale locale;
+	
 	private String getMessage(String key, Object... args) {
-		return messageSource.getMessage(key, args, null);
+		return messageSource.getMessage(key, args, locale);
 	}
 	
 	private UserService userService;
@@ -61,9 +63,10 @@ public class MainController {
     
     @PostMapping(value="/main", produces="text/plain")
     @ResponseBody
-    public String main(@RequestParam("q") String q) {
+    public String main(@RequestParam("q") String q, Locale locale) {
+    	this.locale = locale;
     	List<String> result = new ArrayList<>();
-    	RequestAnalyzer analyzer = new RequestAnalyzer(q, messageSource);
+    	RequestAnalyzer analyzer = new RequestAnalyzer(q, messageSource, locale);
 		user = userService.findUser(SecurityContextHolder.getContext().getAuthentication().getName());
         if (analyzer.isQuestion()) answer(analyzer, result);
         else if (analyzer.isDefinition()) evaluate(analyzer, result);
@@ -164,7 +167,7 @@ public class MainController {
 				if (item==null) {
 					item = itemService.createItem(user, itemName, price);
 					result.add(getMessage(ITEM_CREATED, item));
-				} else if (item.getPrice().equals(price)) {
+				} else if (item.getPrice().compareTo(price)==0) {
 					result.add(getMessage(ITEM_KNOWN, item));
 				} else {
 					BigDecimal oldPrice = item.getPrice();
