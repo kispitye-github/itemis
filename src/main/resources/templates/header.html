@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head th:fragment="header">
+	<meta charset="UTF-8">
+	<title th:text="#{app.title}"></title>
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+	<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</head>
+<body class="container">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" th:fragment="nav">
+	    <div class="container">
+	        <a class="navbar-brand" href="/" th:text="#{app.title}" />
+	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+	                aria-controls="navbarResponsive"
+	                aria-expanded="false">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse" id="navbarResponsive">
+	            <ul class="navbar-nav ml-auto">
+	                <li class="nav-item active" sec:authorize="!isAuthenticated()">
+	                    <a class="nav-link" th:href="@{/login}" th:text="#{app.login}" />
+	                </li>
+	                <li class="nav-item active" sec:authorize="!isAuthenticated()">
+	                    <a class="nav-link" th:href="@{/register}" th:text="#{app.register}" />
+	                </li>
+	                <li class="nav-item active" sec:authorize="isAuthenticated()">
+	                    <a class="navbar-brand" th:href="@{/profile}" th:text="#{app.welcome(${#authentication.name})}" />
+	                </li>
+	                <li class="nav-item active" sec:authorize="isAuthenticated()">
+	                    <a class="nav-link" th:href="@{/logout}" th:text="#{app.logout}" />
+	                </li>
+	                <li class="nav-item dropdown">
+	                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+	                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+	                       th:text="#{lang.change}"/>
+	                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" th:with="currentUrl=(${@queryStringWithoutParam.apply('lang')})">
+	                        <a th:unless="${#locale.language} == 'en'" class="dropdown-item" th:href="@{${currentUrl}(lang=en)}" th:text="#{lang.en}"/>
+	                        <a th:unless="${#locale.language} == 'de'" class="dropdown-item" th:href="@{${currentUrl}(lang=de)}" th:text="#{lang.de}"/>
+	                        <a th:unless="${#locale.language} == 'hu'" class="dropdown-item" th:href="@{${currentUrl}(lang=hu)}" th:text="#{lang.hu}"/>
+	                    </div>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	</nav>
+</body>
+</html>

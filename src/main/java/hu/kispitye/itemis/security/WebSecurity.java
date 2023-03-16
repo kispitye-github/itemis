@@ -67,6 +67,7 @@ public class WebSecurity implements AuthenticationSuccessHandler {
                         .requestMatchers("/webjars/**").permitAll()
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/login/**").permitAll()
+                                .requestMatchers("/error/**").permitAll()
                                 .anyRequest().authenticated()
                 ).formLogin(
                         form -> form
@@ -79,7 +80,12 @@ public class WebSecurity implements AuthenticationSuccessHandler {
                                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                                 .logoutSuccessUrl("/")
                                 .permitAll()
+                ).sessionManagement(
+                		session -> session
+	                		.invalidSessionUrl("/error?invalid")
+	                		.maximumSessions(1).expiredUrl("/error?expired")
                 );
+                		
         return http.build();
     }
 

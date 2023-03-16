@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 @Controller
 public class LoginController {
 
-    // handler method to handle home page request
     @GetMapping("/login")
     public String login(Model model) {
     	if (WebSecurity.getUser()!=null) return "redirect:/";
