@@ -2,15 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head th:replace="~{header :: header}" />
 <body>
- 	<nav th:insert="~{header :: nav}" />
+ 	<nav th:replace="~{header :: nav}" />
 	<div class="container text-center">
 		<div>
-			<h1 th:text="#{app.login}" />
+			<h1 th:text="${param.logout} ? #{app.logout} : #{app.login}" />
 		</div>
         <div th:if="${param.error}">
             <div class="alert alert-danger">
 				<label th:text="#{login.failed}" />
 			</div>
+        </div>
+		<div th:if="${param.logout}">
+          <div class="alert alert-info">
+           	<label th:text="#{logout.success}" />
+          </div>
         </div>
 		<form th:action="@{/login}" 
 			method="post" style="max-width: 600px; margin: 0 auto;">
@@ -37,5 +42,15 @@
 		</div>
 		</form>
 	</div>
+	<div th:if="${param.logout}">
+		<script th:inline="javascript">
+			$(window).on('load', function() {
+				setTimeout( function() {
+					alert(/*[[#{logout.success}]]*/);
+					window.location.href="/";
+				}, 1000);
+			});
+       	</script>
+    </div>
 </body>
 </html>

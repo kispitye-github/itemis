@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head th:replace="~{header :: header}" />
 <body>
- 	<nav th:insert="~{header :: nav}" />
+ 	<nav th:replace="~{header :: nav}" />
 	<div class="container text-center">
 		<h1 th:text="#{error.report}" />
         <div th:if="${param.invalid != null or param.expired != null}" th:text="#{error.report.invalid}" />

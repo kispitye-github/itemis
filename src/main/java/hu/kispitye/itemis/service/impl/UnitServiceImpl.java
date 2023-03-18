@@ -1,5 +1,6 @@
 package hu.kispitye.itemis.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import hu.kispitye.itemis.model.*;
@@ -9,12 +10,9 @@ import hu.kispitye.itemis.service.UnitService;
 @Service
 public class UnitServiceImpl implements UnitService {
 
+    @Autowired
     private UnitRepository unitRepository;
 
-    public UnitServiceImpl(UnitRepository unitRepository) {
-        this.unitRepository = unitRepository;
-    }
-	
 	@Override
 	public Unit createUnit(User user, String name, RomanNumeral numeral) {
 		return unitRepository.save(new Unit(user, name, numeral));

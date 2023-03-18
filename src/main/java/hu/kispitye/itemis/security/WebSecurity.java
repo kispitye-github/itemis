@@ -4,21 +4,22 @@ import java.io.IOException;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 
 import hu.kispitye.itemis.model.User;
@@ -27,6 +28,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 @Configuration
 @EnableWebSecurity
 public class WebSecurity implements AuthenticationSuccessHandler {
@@ -35,40 +37,39 @@ public class WebSecurity implements AuthenticationSuccessHandler {
     private UserDetailsService userDetailsService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private LocaleResolver localeResolver;
-
-    private static UserService userService;
-
-    public WebSecurity(UserService userService) {
-    	WebSecurity.userService = userService;
-    }
-
+    
+    @Autowired
+    private H2ConsoleProperties h2Console;
+    
     @Bean
-	public static PasswordEncoder passwordEncoder() {
+	static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    public static User getUser() {
-	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    return (authentication instanceof AnonymousAuthenticationToken || !authentication.isAuthenticated()) ?
-	    		null:
-	    		userService.findUser(authentication.getName());
-    }
-    
-    public static User saveUser(User user) {
-    	return userService.updateUser(user);
-    }
-    
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    	AntPathRequestMatcher h2ConsolePath = AntPathRequestMatcher.antMatcher(h2Console.getPath()+"/**");
         http
                 .authorizeHttpRequests((authorize) ->
-                        authorize.requestMatchers("/register/**").permitAll()
-                        .requestMatchers("/webjars/**").permitAll()
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/login/**").permitAll()
-                                .requestMatchers("/error/**").permitAll()
-                                .anyRequest().authenticated()
+                        {
+							try {
+								authorize.requestMatchers("/register/**").permitAll()
+								.requestMatchers("/webjars/**").permitAll()
+								        .requestMatchers("/").permitAll()
+								        .requestMatchers("/login/**").permitAll()
+								        .requestMatchers("/error/**").permitAll()
+								        .requestMatchers(h2ConsolePath).hasAuthority("ADMIN")
+								        .anyRequest().authenticated()
+								        .and().csrf().ignoringRequestMatchers(h2ConsolePath)
+								        .and().headers().frameOptions().sameOrigin();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
@@ -77,11 +78,12 @@ public class WebSecurity implements AuthenticationSuccessHandler {
                                 .permitAll()
                 ).logout(
                         logout -> logout
-                                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                                .logoutSuccessUrl("/")
+                                .logoutRequestMatcher(AntPathRequestMatcher.antMatcher("/logout/**"))
+                                .deleteCookies("JSESSIONID")
                                 .permitAll()
                 ).sessionManagement(
                 		session -> session
+                			.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 	                		.invalidSessionUrl("/error?invalid")
 	                		.maximumSessions(1).expiredUrl("/error?expired")
                 );
@@ -99,7 +101,7 @@ public class WebSecurity implements AuthenticationSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		User user = getUser();
+		User user = userService.getCurrentUser();
 		Locale locale = user.getLocale()==null?LocaleContextHolder.getLocale():user.getLocale();
 		localeResolver.setLocale(request, response, locale);
 		response.sendRedirect("/");

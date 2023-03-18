@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import hu.kispitye.itemis.model.User;
 import hu.kispitye.itemis.model.transfer.UserData;
-import hu.kispitye.itemis.security.WebSecurity;
 import hu.kispitye.itemis.service.UserService;
 
 import java.util.Locale;
@@ -23,16 +22,12 @@ public class RegisterController {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@Autowired
 	private UserService userService;
 
-    public RegisterController(UserService userService) {
-        this.userService = userService;
-    }
-    
-   
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-    	if (WebSecurity.getUser()!=null) return "redirect:/";
+    	if (userService.getCurrentUser()!=null) return "redirect:/";
         model.addAttribute("user", new UserData());
         return "register";
     }
@@ -42,17 +37,15 @@ public class RegisterController {
                                BindingResult result,
                                Model model,
                                Locale locale) {
-    	if (WebSecurity.getUser()!=null) return "redirect:/";
+    	if (userService.getCurrentUser()!=null) return "redirect:/";
         User existingUser = userService.findUser(userData.name);
 
-        if(existingUser != null){
-            result.rejectValue("name", "username.exists", messageSource.getMessage("username.exists", null, null));
-        }
-        if (!userData.pwd.equals(userData.pwd2)) {
-            result.rejectValue("pwd", "pwd.mismatch",messageSource.getMessage("pwd.mismatch", null, null));
-        } 
+        if (existingUser != null) result.rejectValue("name", "username.exists",
+        	messageSource.getMessage("username.exists", null, null));
+        if (!userData.pwd.equals(userData.pwd2)) result.rejectValue("pwd", "pwd.mismatch",
+        	messageSource.getMessage("pwd.mismatch", null, null));
 
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             model.addAttribute("user", userData);
             return "register";
         }

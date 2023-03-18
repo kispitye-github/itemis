@@ -6,6 +6,11 @@
 	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
 	<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<script th:inline="javascript">
+	function confirmLogout(event) {
+		if (!confirm(/*[[#{logout.confirm}]]*/)) event.preventDefault();
+	}
+	</script>
 </head>
 <body class="container">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" th:fragment="nav">
@@ -28,7 +33,7 @@
 	                    <a class="navbar-brand" th:href="@{/profile}" th:text="#{app.welcome(${#authentication.name})}" />
 	                </li>
 	                <li class="nav-item active" sec:authorize="isAuthenticated()">
-	                    <a class="nav-link" th:href="@{/logout}" th:text="#{app.logout}" />
+	                    <a class="nav-link" th:href="@{/logout}" th:onclick="confirmLogout(event)" th:text="#{app.logout}" />
 	                </li>
 	                <li class="nav-item dropdown">
 	                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"

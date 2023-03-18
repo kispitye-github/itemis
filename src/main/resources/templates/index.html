@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head th:replace="~{header :: header}" />
 <body>
- 	<nav th:insert="~{header :: nav}" />
+ 	<nav th:replace="~{header :: nav}" />
 	<div class="container text-center">
 		<div class="button-group" sec:authorize="!isAuthenticated()">
 			<h1 th:text="#{app.empty}" />
@@ -92,5 +92,4 @@ function clearMessages(event) {
 }
 </script>
 <noscript>[(#{app.noscript})]</noscript>
-</bodyth:replace="header :: header">
 </html>
