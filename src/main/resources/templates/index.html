@@ -18,7 +18,7 @@
 		
 					</ul>
 					<hr/>
-					<form id="dialogueForm" name="dialogueForm" th:action="@{/main}" method="post" th:onsubmit="sendMessage(event)">
+					<form id="dialogueForm" name="dialogueForm" th:action="${@environment.getProperty(@mainController.PATH_MAIN)}" method="post" th:onsubmit="sendMessage(event)">
 						<div class="form-group">
 							<div class="input-group clearfix">
 								<input type="text" id="message" name="q"

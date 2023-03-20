@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @Configuration
 @EnableWebSecurity
 public class WebSecurity implements AuthenticationSuccessHandler {
+	
+	public static final String ADMIN_ROLE = "ADMIN";
+	
+	private static final String ROOTPATH = "/";
+	private static final String ALLSUBPATHS = "/**";
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -50,20 +56,34 @@ public class WebSecurity implements AuthenticationSuccessHandler {
         return new BCryptPasswordEncoder();
     }
 
+	@Value("#{environment[loginController.PATH_LOGIN]}")
+	private String loginPath;
+    
+	@Value("#{environment[loginController.PATH_LOGOUT]}")
+	private String logoutPath;
+    
+	@Value("#{environment[registerController.PATH_REGISTER]}")
+	private String registerPath;
+    
+	@Value("#{environment[errorController.PATH_ERROR]}")
+	private String errorPath;
+    
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    	AntPathRequestMatcher h2ConsolePath = AntPathRequestMatcher.antMatcher(h2Console.getPath()+"/**");
+    	AntPathRequestMatcher h2ConsolePath = AntPathRequestMatcher.antMatcher(h2Console.getPath()+ALLSUBPATHS);
         http
                 .authorizeHttpRequests((authorize) ->
                         {
+								authorize
+						        	.requestMatchers(ROOTPATH).permitAll()
+									.requestMatchers("/webjars/**").permitAll()            //JQuery and BootStrap
+							        .requestMatchers(loginPath+ALLSUBPATHS).permitAll()
+									.requestMatchers(registerPath+ALLSUBPATHS).permitAll()
+							        .requestMatchers(errorPath+ALLSUBPATHS).permitAll()
+							        .requestMatchers(h2ConsolePath).hasAuthority(ADMIN_ROLE)
+							        .anyRequest().authenticated();
 							try {
-								authorize.requestMatchers("/register/**").permitAll()
-								.requestMatchers("/webjars/**").permitAll()
-								        .requestMatchers("/").permitAll()
-								        .requestMatchers("/login/**").permitAll()
-								        .requestMatchers("/error/**").permitAll()
-								        .requestMatchers(h2ConsolePath).hasAuthority("ADMIN")
-								        .anyRequest().authenticated()
+								authorize
 								        .and().csrf().ignoringRequestMatchers(h2ConsolePath)
 								        .and().headers().frameOptions().sameOrigin();
 							} catch (Exception e) {
@@ -72,20 +92,20 @@ public class WebSecurity implements AuthenticationSuccessHandler {
 						}
                 ).formLogin(
                         form -> form
-                                .loginPage("/login")
-                                .loginProcessingUrl("/login")
+                                .loginPage(loginPath)
+                                .loginProcessingUrl(loginPath)
                                 .successHandler(this)
                                 .permitAll()
                 ).logout(
                         logout -> logout
-                                .logoutRequestMatcher(AntPathRequestMatcher.antMatcher("/logout/**"))
+                                .logoutRequestMatcher(AntPathRequestMatcher.antMatcher(logoutPath+ALLSUBPATHS))
                                 .deleteCookies("JSESSIONID")
                                 .permitAll()
                 ).sessionManagement(
                 		session -> session
                 			.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-	                		.invalidSessionUrl("/error?invalid")
-	                		.maximumSessions(1).expiredUrl("/error?expired")
+	                		.invalidSessionUrl(errorPath+"?invalid")
+	                		.maximumSessions(1).expiredUrl(errorPath+"?expired")
                 );
                 		
         return http.build();
@@ -104,6 +124,6 @@ public class WebSecurity implements AuthenticationSuccessHandler {
 		User user = userService.getCurrentUser();
 		Locale locale = user.getLocale()==null?LocaleContextHolder.getLocale():user.getLocale();
 		localeResolver.setLocale(request, response, locale);
-		response.sendRedirect("/");
+		response.sendRedirect(ROOTPATH);
 	}
 }

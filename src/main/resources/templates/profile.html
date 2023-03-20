@@ -5,14 +5,14 @@
  	<nav th:replace="~{header :: nav}" />
 	<div class="container text-center">
 		<div>
-			<h1 th:text="#{app.register}" />
+			<h1 th:text="#{app.profile}" />
 		</div>
 		<div th:if="${param.success}">
           <div class="alert alert-info">
-           	<label th:text="#{register.success}" />
+           	<label th:text="#{profile.success}" />
           </div>
         </div>
-		<form th:action="@{#}" th:object="${user}" 
+		<form th:action="@{/profile}" th:object="${user}" 
 			method="post" style="max-width: 600px; margin: 0 auto;">
 		<div class="m-3">
 			<div class="form-group row">
@@ -49,15 +49,5 @@
 		</div>
 		</form>
 	</div>
-	<div th:if="${param.success}">
-		<script th:inline="javascript">
-			$(window).on('load', function() {
-				setTimeout( function() {
-					alert(/*[[#{register.success}]]*/);
-					window.location.href="[(${@environment.getProperty(@loginController.PATH_LOGIN)})]";
-				}, 1000);
-			});
-       	</script>
-    </div>
 </body>
 </html>

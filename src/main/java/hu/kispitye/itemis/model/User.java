@@ -13,7 +13,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import hu.kispitye.itemis.model.transfer.UserData;
+import hu.kispitye.itemis.security.WebSecurity;
 import jakarta.persistence.*;
 
 @Component
@@ -44,7 +44,7 @@ public class User implements UserDetails {
 	private String pwd;
 	
 	@Column(nullable = true, length = 16)
-	@Convert(converter = UserData.LocaleConverter.class)
+	@Convert(converter = User.LocaleConverter.class)
 	private Locale locale;
 
 	@OneToMany(
@@ -139,9 +139,11 @@ public class User implements UserDetails {
 		return toString().hashCode();
 	}
 
+	private static final List<GrantedAuthority> ADMIN_AUTHORITY = AuthorityUtils.createAuthorityList(WebSecurity.ADMIN_ROLE); 
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return isAdmin()?AuthorityUtils.createAuthorityList("ADMIN"):AuthorityUtils.NO_AUTHORITIES;
+		return isAdmin()?ADMIN_AUTHORITY:AuthorityUtils.NO_AUTHORITIES;
 	}
 
 	@Override
@@ -183,5 +185,24 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
+
+	public static class LocaleConverter implements AttributeConverter<Locale, String> {
+
+	    @Override
+	    public String convertToDatabaseColumn(Locale locale) {
+	        if (locale != null) {
+	            return locale.toLanguageTag();
+	        }
+	        return null;
+	    }
+
+	    @Override
+	    public Locale convertToEntityAttribute(String languageTag) {
+	        if (languageTag != null && !languageTag.isEmpty()) {
+	            return Locale.forLanguageTag(languageTag);
+	        }
+	        return null;
+	    }
+	}	
 
 }
