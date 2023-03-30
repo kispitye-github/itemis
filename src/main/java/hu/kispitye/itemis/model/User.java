@@ -61,8 +61,7 @@ public class User implements UserDetails {
 		)
 	private Set<Item> items;
 		
-	@SuppressWarnings("unused")
-	private User() {}
+	protected User() {}
 	
 	public User(String name, String pwd) {
 		setUsername(name);

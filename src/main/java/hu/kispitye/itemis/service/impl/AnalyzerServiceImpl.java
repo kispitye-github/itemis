@@ -15,18 +15,17 @@ import hu.kispitye.itemis.service.*;
 public class AnalyzerServiceImpl implements AnalyzerService {
 
 	private final static String QUESTION_UNKNOWN="question.unknown";
-	public static final String QUESTION_NUMBER="question.number";
-	public static final String QUESTION_NUMBER_IS="question.number.is";
-	public static final String QUESTION_PRICE_IS="question.price.is";
-	public static final String QUESTION_PRICE="question.price";
-	public static final String QUESTION_CREDIT="question.credit";
-	public static final String DEFINITION_PRICE_IS="definition.price.is";
-	public static final String DEFINITION_NUMERAL_IS="definition.numeral.is";
-	public static final String ERROR_NUMBER_FORMAT="error.number.format";
-	public static final String ERROR_NUMBER_MISSING="error.number.missing";
-	public static final String ERROR_PRICE_DEFINITION="error.price.definition";
-	public static final String ERROR_NUMERAL_DEFINITION="error.numeral.definition";
-	public static final String ERROR_NUMERAL_FORMAT="error.numeral.format";
+	private static final String QUESTION_NUMBER="question.number";
+	private static final String QUESTION_NUMBER_IS="question.number.is";
+	private static final String QUESTION_PRICE_IS="question.price.is";
+	private static final String QUESTION_PRICE="question.price";
+	private static final String QUESTION_CREDIT="question.credit";
+	private static final String DEFINITION_PRICE_IS="definition.price.is";
+	private static final String DEFINITION_NUMERAL_IS="definition.numeral.is";
+	private static final String ERROR_NUMBER_FORMAT="error.number.format";
+	private static final String ERROR_NUMBER_MISSING="error.number.missing";
+	private static final String ERROR_PRICE_DEFINITION="error.price.definition";
+	private static final String ERROR_NUMERAL_FORMAT="error.numeral.format";
 	private final static String MAIN_UNCLASSIFIED="main.unclassified";
 	private final static String DEFINITION_UNKNOWN="definition.unknown";
 	private final static String ERROR_NUMERAL_DEFINITION_COUNT = "error.numeral.definition.count";
@@ -157,7 +156,6 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 	    	boolean result = false;
 	    	if (checkTokens(false, DEFINITION_NUMERAL_IS)) try {
 				romanNumeral = RomanNumeral.valueOf(lastToken.toUpperCase());
-				tokens.remove(tokens.size()-1);
 				result = true;
 			} catch (IllegalArgumentException ex) {
 				addError(ERROR_NUMERAL_FORMAT, lastToken);
@@ -189,12 +187,12 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 	    }
 	
 	    private void answerPriceQuestion() {
-	    	if (!getErrors().isEmpty()) return;
+	    	if (!errors.isEmpty()) return;
 			if (tokens.size()>0) {
 				String itemName = tokens.remove(tokens.size()-1);
 				if (tokens.size()>0) {
 					RomanNumber number = getRomanNumber();
-					if (getErrors().isEmpty()) {
+					if (errors.isEmpty()) {
 						if (number.isValid()) {
 							Item item = itemService.findItemByName(user, itemName);
 							if (item!=null)  {
@@ -212,7 +210,7 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 	
 		private RomanNumber getRomanNumber() {
 			RomanNumber result = null;
-			if (!getErrors().isEmpty()) return result;
+			if (!errors.isEmpty()) return result;
 			Map<String, RomanNumeral> convert = new HashMap<>(tokens.size()); 
 			List<RomanNumeral> numerals = new ArrayList<>(tokens.size());
 			for (String token:tokens) {
@@ -226,15 +224,15 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 				RomanNumeral numeral = convert.get(token);
 				if (numeral!=null) numerals.add(numeral);
 			}
-			if (getErrors().isEmpty()) result=new RomanNumber(numerals);
+			if (errors.isEmpty()) result=new RomanNumber(numerals);
 			return result;
 		}
 		
 		private void answerNumberQuestion() {
-	    	if (!getErrors().isEmpty()) return;
+	    	if (!errors.isEmpty()) return;
 			if (tokens.size()>0) {
 				RomanNumber number = getRomanNumber();
-				if (getErrors().isEmpty()) {
+				if (errors.isEmpty()) {
 					if (number.isValid()) {
 						for (String token:tokens) result.add(token);
 						result.add(getMessage(DEFINITION_NUMERAL_IS));
@@ -251,7 +249,7 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 	    }
 	
 		private void evaluatePrice() {
-	    	if (!getErrors().isEmpty()) return;
+	    	if (!errors.isEmpty()) return;
 			if (tokens.size()==0) {
 				addError(ERROR_PRICE_DEFINITION_ITEM);
 				return;
@@ -262,7 +260,7 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 				return;
 			}
 			RomanNumber number = getRomanNumber();
-			if (getErrors().isEmpty()) {
+			if (errors.isEmpty()) {
 				if (number.isValid()) {
 					BigDecimal price = BigDecimal.valueOf(qty).divide(BigDecimal.valueOf(number.getValue()));
 					Item item=itemService.findItemByName(user, itemName);
@@ -282,7 +280,7 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 		}
 	
 		private void evaluateNumeral() {
-	    	if (!getErrors().isEmpty()) return;
+	    	if (!errors.isEmpty()) return;
 			if (tokens.size()==1) {
 				String unitName = tokens.get(0);
 				Unit unitByName = unitService.findUnitByName(user, unitName);
@@ -313,12 +311,9 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 					unitService.updateUnit(unitByName);
 					result.add(getMessage(UNIT_MERGED, u1, u2, unitByName));
 				}
-	 
 			} else addError(ERROR_NUMERAL_DEFINITION_COUNT);
 		}
 	
-	    
-	    
 		@Override
 		public List<String> getResult() {
 			return result;
@@ -329,7 +324,4 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 			return errors;
 		}
 	}
-	    
 }
-
-	

@@ -15,8 +15,10 @@ import hu.kispitye.itemis.service.*;
 @Controller
 public class MainController {
 
-	private final static String ERROR_LIST="error.list";
 	public static final String PATH_MAIN="path.main";
+	public static final String PARAM_Q="q";
+
+	private final static String ERROR_LIST="error.list";
 
 	@Autowired
 	private MessageSource messageSource;
@@ -29,7 +31,7 @@ public class MainController {
    
     @PostMapping(value="#{environment[mainController.PATH_MAIN]}", produces="text/plain")
     @ResponseBody
-    public String main(@RequestParam("q") String q) {
+    public String main(@RequestParam(PARAM_Q) String q) {
     	AnalyzerService.Result result = analyzerService.analyze(q);
     	Locale locale = userService.getCurrentUser().getLocale();
         String s=result.getResult().stream().collect(Collectors.joining(" "));

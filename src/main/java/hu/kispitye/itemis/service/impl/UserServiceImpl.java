@@ -23,11 +23,12 @@ public class UserServiceImpl implements UserService {
     
 	@Override
 	public User createUser(String name, String pwd) {
-		return updateUser(new User(name, passwordEncoder.encode(pwd)));
+		return updateUser(new User(name, null), pwd);
 	}
 
 	@Override
-	public User updateUser(User user) {
+	public User updateUser(User user, String pwd) {
+		if (pwd!=null) user.setPassword(passwordEncoder.encode(pwd));
 		if (user.getAdmin()==null) user.setAdmin(user.isAdmin());
 		if (user.getLocale()==null) user.setLocale(LocaleContextHolder.getLocale());
 		return userRepository.save(user);

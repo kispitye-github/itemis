@@ -27,6 +27,11 @@ import jakarta.servlet.http.HttpServletResponse;
 @SpringBootApplication
 public class ItemisApplication extends SpringBootServletInitializer implements WebMvcConfigurer {
 	
+	public static final String LANG_EN="en";
+	public static final String LANG_DE="de";
+	public static final String LANG_HU="hu";
+	public static final String PARAM_LANG="lang";
+	
 	@Autowired
 	UserService userService;
 
@@ -38,7 +43,7 @@ public class ItemisApplication extends SpringBootServletInitializer implements W
 	    		if (locale!=null) {
 	    			User user = userService.getCurrentUser();
 	    			if (user!=null && !locale.equals(user.getLocale()))  {
-	    				userService.updateUser(user.setLocale(locale));
+	    				userService.updateUser(user.setLocale(locale), null);
 	    				setDefaultLocale(locale);
 	    			}
 	    		}
@@ -50,13 +55,13 @@ public class ItemisApplication extends SpringBootServletInitializer implements W
 	@Bean
 	LocaleChangeInterceptor localeChangeInterceptor() {
 	    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-	    lci.setParamName("lang");
+	    lci.setParamName(PARAM_LANG);
 	    return lci;
 	}
 	
 	@Bean
-	Function<String, String> queryStringWithoutParam() {
-	    return param ->   ServletUriComponentsBuilder.fromCurrentRequest().scheme(null).host(null).port(null).path(null).replaceQueryParam(param).toUriString();
+	Function<String, String> queryStringWithLang() {
+	    return lang ->   ServletUriComponentsBuilder.fromCurrentRequest().scheme(null).host(null).port(null).path(null).replaceQueryParam(PARAM_LANG, lang).toUriString();
 	}
 	
    @Override

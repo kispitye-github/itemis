@@ -23,6 +23,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 
+import hu.kispitye.itemis.controller.ErrorController;
 import hu.kispitye.itemis.model.User;
 import hu.kispitye.itemis.service.UserService;
 import jakarta.servlet.ServletException;
@@ -36,7 +37,6 @@ public class WebSecurity implements AuthenticationSuccessHandler {
 	
 	public static final String ADMIN_ROLE = "ADMIN";
 	
-	private static final String ROOTPATH = "/";
 	private static final String ALLSUBPATHS = "/**";
 
     @Autowired
@@ -68,6 +68,9 @@ public class WebSecurity implements AuthenticationSuccessHandler {
 	@Value("#{environment[errorController.PATH_ERROR]}")
 	private String errorPath;
     
+	@Value("#{environment[homeController.PATH_ROOT]}")
+	private String rootPath;
+    
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     	AntPathRequestMatcher h2ConsolePath = AntPathRequestMatcher.antMatcher(h2Console.getPath()+ALLSUBPATHS);
@@ -75,7 +78,7 @@ public class WebSecurity implements AuthenticationSuccessHandler {
                 .authorizeHttpRequests((authorize) ->
                         {
 								authorize
-						        	.requestMatchers(ROOTPATH).permitAll()
+						        	.requestMatchers(rootPath).permitAll()
 									.requestMatchers("/webjars/**").permitAll()            //JQuery and BootStrap
 							        .requestMatchers(loginPath+ALLSUBPATHS).permitAll()
 									.requestMatchers(registerPath+ALLSUBPATHS).permitAll()
@@ -104,8 +107,8 @@ public class WebSecurity implements AuthenticationSuccessHandler {
                 ).sessionManagement(
                 		session -> session
                 			.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-	                		.invalidSessionUrl(errorPath+"?invalid")
-	                		.maximumSessions(1).expiredUrl(errorPath+"?expired")
+	                		.invalidSessionUrl(errorPath+"?"+ErrorController.PARAM_INVALID)
+	                		.maximumSessions(1).expiredUrl(errorPath+"?"+ErrorController.PARAM_EXPIRED)
                 );
                 		
         return http.build();
@@ -124,6 +127,6 @@ public class WebSecurity implements AuthenticationSuccessHandler {
 		User user = userService.getCurrentUser();
 		Locale locale = user.getLocale()==null?LocaleContextHolder.getLocale():user.getLocale();
 		localeResolver.setLocale(request, response, locale);
-		response.sendRedirect(ROOTPATH);
+		response.sendRedirect(rootPath);
 	}
 }

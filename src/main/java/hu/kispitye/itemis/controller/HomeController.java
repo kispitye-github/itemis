@@ -8,9 +8,13 @@ import org.springframework.ui.Model;
 @Controller
 public class HomeController {
 
-    @GetMapping("/")
+	public static final String PATH_ROOT="path.root";
+	
+	public static final String HOME_VIEW="index";
+	
+    @GetMapping("#{environment[homeController.PATH_ROOT]}")
     public String home(Model model) {
-        return "index";
+        return HOME_VIEW;
     }
     
 }

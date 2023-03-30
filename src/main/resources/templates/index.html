@@ -21,7 +21,7 @@
 					<form id="dialogueForm" name="dialogueForm" th:action="${@environment.getProperty(@mainController.PATH_MAIN)}" method="post" th:onsubmit="sendMessage(event)">
 						<div class="form-group">
 							<div class="input-group clearfix">
-								<input type="text" id="message" name="q"
+								<input type="text" id="message" th:name="${@mainController.PARAM_Q}"
 									autocomplete="off" autofocus
 									class="form-control" />
 									&nbsp;
@@ -75,7 +75,6 @@ function onResponse(message, response) {
 
 	messageElement.appendChild(element);
 
-
 	var textElement = document.createElement('p');
 	var messageText = document.createTextNode(response);
 	textElement.appendChild(messageText);
@@ -92,4 +91,5 @@ function clearMessages(event) {
 }
 </script>
 <noscript>[(#{app.noscript})]</noscript>
+</body>
 </html>

@@ -9,18 +9,10 @@ import hu.kispitye.itemis.model.transfer.*;
 import hu.kispitye.itemis.service.UserService;
 
 import java.sql.SQLException;
-import java.util.Locale;
-import java.util.Map;
-
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.h2.H2ConsoleAutoConfiguration;
 import org.springframework.boot.autoconfigure.h2.H2ConsoleProperties;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest.H2ConsoleRequestMatcher;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,9 +20,18 @@ import org.springframework.validation.BindingResult;
 @Controller
 public class ProfileController {
 
-	@Autowired
-	private MessageSource messageSource;
+	public static final String PATH_PROFILE="path.profile";
+	public static final String ATTRIBUTE_DB="db";
+	public static final String ATTRIBUTE_CONSOLE="console";
+	public static final String ATTRIBUTE_USER="user";
+	public static final String FIELD_NAME="name";
+	public static final String FIELD_PWD="pwd";
+	public static final String FIELD_PWD2="pwd2";
+	public static final String FIELD_ADMIN="admin";
+	public static final String PARAM_SUCCESS="success";
 	
+	private static final String VIEW_PROFILE="profile";
+
 	@Autowired
 	private UserService userService;
 	
@@ -43,33 +44,40 @@ public class ProfileController {
 	@Value("${spring.datasource.url}")
 	private String url;
 	
-    @GetMapping("/profile")
-    public String showRegistrationForm(Model model) throws SQLException {
-    	if (userService.getCurrentUser().isAdmin()) {
-    		model.addAttribute("db", new DbDto().setUrl(url).setUser(username).setPwd(password));
+    @Autowired
+    private H2ConsoleProperties h2Console;
+	
+    @GetMapping("#{environment[profileController.PATH_PROFILE]}")
+    public String showProfileForm(Model model) throws SQLException {
+    	User user = userService.getCurrentUser(); 
+    	if (user.isAdmin()) {
+    		model.addAttribute(ATTRIBUTE_DB, new DbDto(url, username, password));
+    		model.addAttribute(ATTRIBUTE_CONSOLE, h2Console.getPath());
     	}
-        model.addAttribute("user", new UserDto(userService.getCurrentUser()));
-        return "profile";
+        model.addAttribute(ATTRIBUTE_USER, new UserDto(user));
+        return VIEW_PROFILE;
     }
 
-    @PostMapping("/profile")
-    public String registration(@ModelAttribute("user") UserDto userData,
+    @PostMapping("#{environment[profileController.PATH_PROFILE]}")
+    public String changeProfile(@ModelAttribute(ATTRIBUTE_USER) UserDto userData,
                                BindingResult result,
-                               Model model,
-                               Locale locale) {
-    	if (userService.getCurrentUser()!=null) return "redirect:/";
+                               Model model) {
         User existingUser = userService.findUser(userData.name);
+    	User user = userService.getCurrentUser(); 
 
-        if (existingUser != null) result.rejectValue("name", "username.exists",
-        	messageSource.getMessage("username.exists", null, null));
-        if (!userData.pwd.equals(userData.pwd2)) result.rejectValue("pwd", "pwd.mismatch",
-        	messageSource.getMessage("pwd.mismatch", null, null));
+        if (existingUser!=null && !existingUser.equals(user)) result.rejectValue(FIELD_NAME, "username.exists", "");
+        String pwd=userData.pwd!=null && userData.pwd.trim().length()>0 ? userData.pwd.trim() : null; 
+        if ( pwd!=null && !pwd.equals(userData.pwd2)) result.rejectValue(FIELD_PWD, "pwd.mismatch", "");
 
         if (result.hasErrors()) {
-            model.addAttribute("user", userData);
-            return "profile";
+            model.addAttribute(ATTRIBUTE_USER, userData);
+            userData.setAdmin(user.isAdmin());
+            return VIEW_PROFILE;
         }
+        
+        user.setUsername(userData.name);
+        userService.updateUser(user, pwd);
 
-        return "redirect:profile?success";
+        return "redirect:"+VIEW_PROFILE+"?"+PARAM_SUCCESS;
     }
 }

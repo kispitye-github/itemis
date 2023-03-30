@@ -2,49 +2,50 @@
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
 <head th:replace="~{header :: header}" />
 <body>
- 	<nav th:replace="~{header :: nav}" />
-	<div class="container text-center">
+ 	<nav th:unless="${__${@errorController.ATTRIBUTE_HEADER}__}" th:replace="~{header :: nav}" />
+ 	<hr th:if="${__${@errorController.ATTRIBUTE_HEADER}__}" />
+	<div class="container text-center" th:with="invalidOrExpired=param.__${@errorController.PARAM_INVALID}__ != null or param.__${@errorController.PARAM_EXPIRED}__ != null">
 		<h1 th:text="#{error.report}" />
-        <div th:if="${param.invalid != null or param.expired != null}" th:text="#{error.report.invalid}" />
-        <div th:unless="${param.invalid != null or param.expired != null}" class="m-3">
-			<div class="form-group row" th:if="${path}">
+        <div th:if="${invalidOrExpired}" th:text="#{error.report.invalid}" />
+        <div th:unless="${invalidOrExpired}" class="m-3">
+			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_PATH}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.path}" />
-				<span th:text="${path}" />
+				<span th:text="${__${@errorController.ATTRIBUTE_PATH}__}" />
 			</div>
-			<div class="form-group row" th:if="${timestamp}">
+			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_TIMESTAMP}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.timestamp}" />
-				<span th:text="${timestamp}" />
+				<span th:text="${__${@errorController.ATTRIBUTE_TIMESTAMP}__}" />
 			</div>
-			<div class="form-group row" th:if="${status}">
+			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_STATUS}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.status}" />
-				<span th:text="${status}" />
+				<span th:text="${__${@errorController.ATTRIBUTE_STATUS}__}" />
 			</div>
-			<div class="form-group row" th:if="${error}">
+			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_ERROR}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.error}" />
-				<span th:text="${error}" />
+				<span th:text="${__${@errorController.ATTRIBUTE_ERROR}__}" />
 			</div>
-			<div class="form-group row" th:if="${message}">
+			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_MESSAGE}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.message}" />
-				<span th:text="${message}" />
+				<span th:text="${__${@errorController.ATTRIBUTE_MESSAGE}__}" />
 			</div>
-			<div class="form-group row" th:if="${exception}">
+			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_EXCEPTION}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.exception}" />
-				<span th:text="${exception}" />
+				<span th:text="${__${@errorController.ATTRIBUTE_EXCEPTION}__}" />
 			</div>
-			<div class="form-group row" th:if="${trace}">
+			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_TRACE}__}">
 				<label class="col-8 col-form-label text-right" th:text="#{error.report.trace}" />
 				<span th:utext="'&lt;!--'" th:remove="tag" />
 				
-				<span th:remove="tag" th:text="${trace}" />
+				<span th:remove="tag" th:text="${__${@errorController.ATTRIBUTE_TRACE}__}" />
 				
 				<span th:utext="'--&gt;'" th:remove="tag" />
 			</div>
      	</div>
 	    <hr />
 		<div class="alert alert-warning">
-	        <div th:if="${param.invalid != null or param.expired != null}" th:text="#{error.report.invalid.solution}" />
-	        <div th:unless="${param.invalid != null or param.expired != null}">
-	            <div th:switch="${status}">
+	        <div th:if="${invalidOrExpired}" th:text="#{error.report.invalid.solution}" />
+	        <div th:unless="${invalidOrExpired}">
+	            <div th:switch="${__${@errorController.ATTRIBUTE_STATUS}__}">
                 	<p th:case="999" th:text="#{error.report.reload.solution}" />
                 	<p th:case="404" th:text="#{error.report.notfound.solution}" />
 	                <p th:case="*" th:text="#{error.report.support.solution}" />

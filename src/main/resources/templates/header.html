@@ -15,7 +15,7 @@
 <body class="container">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" th:fragment="nav">
 	    <div class="container">
-	        <a class="navbar-brand" href="/" th:text="#{app.title}" />
+	        <a class="navbar-brand" th:href="${@environment.getProperty(@homeController.PATH_ROOT)}" th:text="#{app.title}" />
 	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
 	                aria-controls="navbarResponsive"
 	                aria-expanded="false">
@@ -30,7 +30,7 @@
 	                    <a class="nav-link" th:href="${@environment.getProperty(@registerController.PATH_REGISTER)}" th:text="#{app.register}" />
 	                </li>
 	                <li class="nav-item active" sec:authorize="isAuthenticated()">
-	                    <a class="navbar-brand" th:href="@{/profile}" th:text="#{app.welcome(${#authentication.name})}" />
+	                    <a class="navbar-brand" th:href="${@environment.getProperty(@profileController.PATH_PROFILE)}" th:text="#{app.welcome(${#authentication.name})}" />
 	                </li>
 	                <li class="nav-item active" sec:authorize="isAuthenticated()">
 	                    <a class="nav-link" th:href="${@environment.getProperty(@loginController.PATH_LOGOUT)}" th:onclick="confirmLogout(event)" th:text="#{app.logout}" />
@@ -39,10 +39,10 @@
 	                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
 	                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
 	                       th:text="#{lang.change}"/>
-	                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink" th:with="currentUrl=(${@queryStringWithoutParam.apply('lang')})">
-	                        <a th:unless="${#locale.language} == 'en'" class="dropdown-item" th:href="@{${currentUrl}(lang=en)}" th:text="#{lang.en}"/>
-	                        <a th:unless="${#locale.language} == 'de'" class="dropdown-item" th:href="@{${currentUrl}(lang=de)}" th:text="#{lang.de}"/>
-	                        <a th:unless="${#locale.language} == 'hu'" class="dropdown-item" th:href="@{${currentUrl}(lang=hu)}" th:text="#{lang.hu}"/>
+	                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	                        <a th:unless="${#locale.language} == '${@itemisApplication.LANG_EN}'" class="dropdown-item" th:href="${@queryStringWithLang.apply(@itemisApplication.LANG_EN)}" th:text="#{lang.en}"/>
+	                        <a th:unless="${#locale.language} == '${@itemisApplication.LANG_DE}'" class="dropdown-item" th:href="${@queryStringWithLang.apply(@itemisApplication.LANG_DE)}" th:text="#{lang.de}"/>
+	                        <a th:unless="${#locale.language} == '${@itemisApplication.LANG_HU}'" class="dropdown-item" th:href="${@queryStringWithLang.apply(@itemisApplication.LANG_HU)}" th:text="#{lang.hu}"/>
 	                    </div>
 	                </li>
 	            </ul>
