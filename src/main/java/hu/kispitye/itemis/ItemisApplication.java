@@ -33,7 +33,7 @@ public class ItemisApplication extends SpringBootServletInitializer implements W
 	public static final String PARAM_LANG="lang";
 	
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	@Bean
 	LocaleResolver localeResolver() {
@@ -43,7 +43,8 @@ public class ItemisApplication extends SpringBootServletInitializer implements W
 	    		if (locale!=null) {
 	    			User user = userService.getCurrentUser();
 	    			if (user!=null && !locale.equals(user.getLocale()))  {
-	    				userService.updateUser(user.setLocale(locale), null);
+	    				user.setLocale(locale);
+	    				userService.updateUser(user, null);
 	    				setDefaultLocale(locale);
 	    			}
 	    		}

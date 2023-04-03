@@ -22,7 +22,7 @@ public class LoginController {
 	public static final String HOME_VIEW="login";
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	
 	@Value("#{environment[homeController.PATH_ROOT]}")
 	private String rootPath;

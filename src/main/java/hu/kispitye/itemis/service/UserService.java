@@ -1,8 +1,7 @@
 package hu.kispitye.itemis.service;
 
-import java.util.Locale;
-
 import hu.kispitye.itemis.model.User;
+import hu.kispitye.itemis.model.UserWithUnitsAndItems;
 
 public interface UserService {
 	User createUser(String name, String pwd);
@@ -10,4 +9,5 @@ public interface UserService {
 	void deleteUser(User user);
 	User findUser(String name);
 	User getCurrentUser();
+	UserWithUnitsAndItems getCurrentUserWithUnitsAndItems();
 }

@@ -14,7 +14,7 @@ public class UnitServiceImpl implements UnitService {
     private UnitRepository unitRepository;
 
 	@Override
-	public Unit createUnit(User user, String name, RomanNumeral numeral) {
+	public Unit createUnit(UserWithUnitsAndItems user, String name, RomanNumeral numeral) {
 		return unitRepository.save(new Unit(user, name, numeral));
 	}
 
@@ -29,12 +29,12 @@ public class UnitServiceImpl implements UnitService {
 	}
 
 	@Override
-	public Unit findUnitByName(User user, String name) {
+	public Unit findUnitByName(UserWithUnitsAndItems user, String name) {
 		return unitRepository.findByUserAndNameIgnoreCase(user, name);
 	}
 
 	@Override
-	public Unit findUnitByRomanNumeral(User user, RomanNumeral numeral) {
+	public Unit findUnitByRomanNumeral(UserWithUnitsAndItems user, RomanNumeral numeral) {
 		return unitRepository.findByUserAndNumeral(user, numeral);
 	}
 

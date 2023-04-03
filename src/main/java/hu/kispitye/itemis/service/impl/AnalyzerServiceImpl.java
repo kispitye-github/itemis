@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import hu.kispitye.itemis.model.*;
 import hu.kispitye.itemis.service.*;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AnalyzerServiceImpl implements AnalyzerService {
@@ -48,6 +49,7 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 	
 
 	@Override
+	@Transactional
 	public Result analyze(String q) {
 		return new Run(q);
 	}
@@ -72,7 +74,7 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 		    else addError(MAIN_UNCLASSIFIED);
 		}
 	
-		private User user = userService.getCurrentUser();
+		private UserWithUnitsAndItems user = userService.getCurrentUserWithUnitsAndItems();
 
 		private String getMessage(String key, Object... args) {
 			return messageSource.getMessage(key, args, user.getLocale());

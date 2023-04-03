@@ -26,20 +26,20 @@ public class Item {
 	private BigDecimal price;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private User user;
+	private UserWithUnitsAndItems user;
 	
-	public User getUser() {
+	public UserWithUnitsAndItems getUser() {
 		return user;
 	}
 
-	public Item setUser(User user) {
+	public Item setUser(UserWithUnitsAndItems user) {
 		this.user = user;
 		return this;
 	}
 
 	Item() {}
 
-	public Item(User user, String name, BigDecimal price) {
+	public Item(UserWithUnitsAndItems user, String name, BigDecimal price) {
 		setUser(user);
 		setName(name);
 		setPrice(price);

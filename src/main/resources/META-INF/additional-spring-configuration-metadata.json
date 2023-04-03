@@ -1,0 +1,37 @@
+{"properties": [
+  {
+    "name": "admin.usernames",
+    "type": "java.lang.String",
+    "description": "A description for 'admin.usernames'"
+  },
+  {
+    "name": "path.login",
+    "type": "java.lang.String",
+    "description": "A description for 'path.login'"
+  },
+  {
+    "name": "path.logout",
+    "type": "java.lang.String",
+    "description": "A description for 'path.logout'"
+  },
+  {
+    "name": "path.main",
+    "type": "java.lang.String",
+    "description": "A description for 'path.main'"
+  },
+  {
+    "name": "path.profile",
+    "type": "java.lang.String",
+    "description": "A description for 'path.profile'"
+  },
+  {
+    "name": "path.register",
+    "type": "java.lang.String",
+    "description": "A description for 'path.register'"
+  },
+  {
+    "name": "path.root",
+    "type": "java.lang.String",
+    "description": "A description for 'path.root'"
+  }
+]}

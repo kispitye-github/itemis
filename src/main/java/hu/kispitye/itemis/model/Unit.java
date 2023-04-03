@@ -25,20 +25,20 @@ public class Unit {
 	private RomanNumeral numeral;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	private User user;
+	private UserWithUnitsAndItems user;
 	
-	public User getUser() {
+	public UserWithUnitsAndItems getUser() {
 		return user;
 	}
 
-	public Unit setUser(User user) {
+	public Unit setUser(UserWithUnitsAndItems user) {
 		this.user = user;
 		return this;
 	}
 
 	Unit() {}
 
-	public Unit(User user, String name, RomanNumeral numeral) {
+	public Unit(UserWithUnitsAndItems user, String name, RomanNumeral numeral) {
 		setUser(user);
 		setName(name);
 		setNumeral(numeral);

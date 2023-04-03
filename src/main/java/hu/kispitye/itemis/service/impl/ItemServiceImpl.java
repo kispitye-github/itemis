@@ -16,7 +16,7 @@ public class ItemServiceImpl implements ItemService {
 	private ItemRepository itemRepository;
 
 	@Override
-	public Item createItem(User user, String name, BigDecimal price) {
+	public Item createItem(UserWithUnitsAndItems user, String name, BigDecimal price) {
 		return itemRepository.save(new Item(user, name, price));
 	}
 
@@ -31,7 +31,7 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public Item findItemByName(User user, String name) {
+	public Item findItemByName(UserWithUnitsAndItems user, String name) {
 		return itemRepository.findByUserAndNameIgnoreCase(user, name);
 	}
 }
