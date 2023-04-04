@@ -5,11 +5,11 @@ import java.util.Locale;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-class UserBase {
+public class UserBase {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	protected Long id;
 
 	@Column(nullable = true)
 	protected Boolean admin;

@@ -1,7 +1,7 @@
 package hu.kispitye.itemis.repository;
 
-import hu.kispitye.itemis.model.UserWithUnitsAndItems;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserWithUnitsAndItemsRepository extends JpaRepository<UserWithUnitsAndItems, Long> {}
+import hu.kispitye.itemis.model.UserWithUnitsAndItems;
+
+public interface UserWithUnitsAndItemsRepository extends HibernateRepository<UserWithUnitsAndItems>, JpaRepository<UserWithUnitsAndItems, Long> {}

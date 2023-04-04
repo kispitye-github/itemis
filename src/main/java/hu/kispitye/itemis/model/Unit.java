@@ -1,5 +1,8 @@
 package hu.kispitye.itemis.model;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,6 +16,8 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "units",
 	uniqueConstraints={@UniqueConstraint(columnNames ={"user_id","name"}),
 			@UniqueConstraint(columnNames ={"user_id","numeral"})})
+@SelectBeforeUpdate(false)
+@DynamicUpdate
 public class Unit {
 	@Id
 	@GeneratedValue

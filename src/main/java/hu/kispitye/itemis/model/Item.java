@@ -2,6 +2,9 @@ package hu.kispitye.itemis.model;
 
 import java.math.BigDecimal;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +17,8 @@ import jakarta.persistence.UniqueConstraint;
 @Entity
 @Table(name = "items",
 	uniqueConstraints={@UniqueConstraint(columnNames ={"user_id","name"})})
+@SelectBeforeUpdate(false)
+@DynamicUpdate
 public class Item {
 	@Id
 	@GeneratedValue

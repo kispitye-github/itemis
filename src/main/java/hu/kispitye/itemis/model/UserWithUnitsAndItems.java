@@ -2,10 +2,15 @@ package hu.kispitye.itemis.model;
 
 import java.util.Set;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SelectBeforeUpdate;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "users")
+@SelectBeforeUpdate(false)
+@DynamicUpdate
 public class UserWithUnitsAndItems extends UserBase {
 
 	@OneToMany(
@@ -22,6 +27,16 @@ public class UserWithUnitsAndItems extends UserBase {
 		)
 	private Set<Item> items;
 		
+	protected UserWithUnitsAndItems() {} //JPA
+	
+	public UserWithUnitsAndItems(User user) {
+		id = user.id;
+		name = user.name;
+		pwd = user.pwd;
+		admin = user.admin;
+		locale = user.locale;
+	}
+
 	public Set<Unit> getUnits() {
 		return units;
 	}

@@ -1,9 +1,9 @@
 package hu.kispitye.itemis.repository;
 
-import hu.kispitye.itemis.model.User;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+import hu.kispitye.itemis.model.User;
+
+public interface UserRepository extends HibernateRepository<User>, JpaRepository<User, Long> {
     User findByNameIgnoreCase(String name);
 }
