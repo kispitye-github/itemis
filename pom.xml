@@ -18,6 +18,30 @@
 		<testcontainers.version>1.17.6</testcontainers.version>
 		<start-class>hu.kispitye.itemis.ItemisApplication</start-class>
 	</properties>
+	<profiles>
+	    <profile>
+	        <id>dev</id>
+	        <activation>
+	            <activeByDefault>true</activeByDefault>
+	        </activation>
+	        <properties>
+	            <spring.profiles.active>dev</spring.profiles.active>
+	        </properties>
+			<dependencies>
+		   		<dependency>
+			        <groupId>org.springframework.boot</groupId>
+			        <artifactId>spring-boot-devtools</artifactId>
+			        <optional>true</optional>
+			    </dependency>
+			</dependencies>
+	    </profile>
+	    <profile>
+	        <id>prod</id>
+	        <properties>
+	            <spring.profiles.active>prod</spring.profiles.active>
+	        </properties>
+	    </profile>
+	</profiles>
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
@@ -78,11 +102,7 @@
 		   <artifactId>spring-boot-starter-tomcat</artifactId>
 		   <scope>provided</scope>
 		</dependency>
-		<dependency>
-	        <groupId>org.springframework.boot</groupId>
-	        <artifactId>spring-boot-devtools</artifactId>
-	        <optional>true</optional>
-	    </dependency>
+<!-- unknown enum constant javax.annotation.meta.When.MAYBE -->
 	   <dependency>
 	        <groupId>com.google.code.findbugs</groupId>
 	        <artifactId>annotations</artifactId>
@@ -105,6 +125,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
             </resource>
         </resources>
 		<finalName>${project.artifactId}</finalName>

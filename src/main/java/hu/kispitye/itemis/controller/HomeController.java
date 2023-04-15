@@ -10,11 +10,11 @@ public class HomeController {
 
 	public static final String PATH_ROOT="path.root";
 	
-	public static final String HOME_VIEW="index";
-	
+	private static final String VIEW_HOME="index";
+
     @GetMapping("#{environment[homeController.PATH_ROOT]}")
     public String home(Model model) {
-        return HOME_VIEW;
+        return VIEW_HOME;
     }
     
 }

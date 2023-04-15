@@ -1,95 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
-<head th:replace="~{header :: header}" />
+<head th:replace="~{${@itemisApplication.VIEW_HEADER} :: head}" />
 <body>
- 	<nav th:replace="~{header :: nav}" />
+ 	<nav th:replace="~{${@itemisApplication.VIEW_HEADER} :: nav}" />
 	<div class="container text-center">
-		<div class="button-group" sec:authorize="!isAuthenticated()">
+		<div class="button-group" sec:authorize="!isAuthenticated() || #authentication.name==null">
 			<h1 th:text="#{app.empty}" />
 	    </div>
-		<div class="button-group" sec:authorize="isAuthenticated()">
-		    <div id="dialogue-page">
-				<div class="dialogue-container">
-					<div class="dialogue-header">
-        				<h2 th:text="#{app.dialogue}" />
-        				<span th:text="#{app.help}" />
-					</div>
-					<ul id="messages" class="text-left">
-		
-					</ul>
-					<hr/>
-					<form id="dialogueForm" name="dialogueForm" th:action="${@environment.getProperty(@mainController.PATH_MAIN)}" method="post" th:onsubmit="sendMessage(event)">
-						<div class="form-group">
-							<div class="input-group clearfix">
-								<input type="text" id="message" th:name="${@mainController.PARAM_Q}"
-									autocomplete="off" autofocus
-									class="form-control" />
-									&nbsp;
-								<button type="submit"
-                                    class="btn btn-lg btn-primary">
-                                	<label th:text="#{app.submit}"></label>
-                            	</button>
-									&nbsp;
-								<button type="reset" th:onclick="clearMessages(event)"
-                                    class="btn btn-lg btn-primary">
-                                	<label th:text="#{app.clear}"></label>
-                            	</button>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
+		<div class="button-group" sec:authorize="isAuthenticated() && #authentication.name!=null" th:insert="~{${@mainController.VIEW_MAIN} :: body}">
 		</div>
 	</div>
-<script th:inline="javascript">
-function sendMessage(event) {
-	var message = document.getElementById('message');
-	var content = message.value.trim();
-	if (content) {
-	    var frm = $('#dialogueForm');
-        $.ajax({
-            type: frm.attr('method'),
-            url: frm.attr('action'),
-            data: frm.serialize(),
-            success: function(response) {
-				message.value = '';
-				onResponse(content, response);
-            },
-            error: function(data) {
-                alert(/*[[#{app.errormessage}]]*/);
-            }
-        });
-	} else alert(/*[[#{app.nomessage}]]*/);
-	event.preventDefault();
-	message.scrollIntoView();
-	message.focus();
-}
-function onResponse(message, response) {
-	var messageElement = document.createElement('li');
-
-	messageElement.classList.add('message-data');
-
-	var element = document.createElement('i');
-	var text = document.createTextNode(message);
-	element.appendChild(text);
-
-	messageElement.appendChild(element);
-
-	var textElement = document.createElement('p');
-	var messageText = document.createTextNode(response);
-	textElement.appendChild(messageText);
-
-	messageElement.appendChild(textElement);
-
-	document.querySelector('#messages').appendChild(messageElement);
-	document.querySelector('#messages').scrollTop = document
-			.querySelector('#messages').scrollHeight;
-
-}
-function clearMessages(event) {
-	window.location.reload();
-}
-</script>
-<noscript>[(#{app.noscript})]</noscript>
 </body>
 </html>

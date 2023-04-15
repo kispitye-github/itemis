@@ -18,8 +18,8 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import hu.kispitye.itemis.model.User;
-import hu.kispitye.itemis.service.UserService;
+import hu.kispitye.itemis.user.User;
+import hu.kispitye.itemis.user.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -32,7 +32,9 @@ public class ItemisApplication extends SpringBootServletInitializer implements W
 	public static final String LANG_HU="hu";
 	public static final String PARAM_LANG="lang";
 	
-	@Autowired
+	public static final String VIEW_HEADER = "header";
+	
+	@Autowired(required=false)
 	private UserService userService;
 
 	@Bean

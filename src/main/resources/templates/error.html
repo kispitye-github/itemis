@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
-<head th:replace="~{header :: header}" />
+<head th:unless="${__${@errorController.ATTRIBUTE_HEADER}__}" th:replace="~{${@itemisApplication.VIEW_HEADER} :: head}" />
 <body>
- 	<nav th:unless="${__${@errorController.ATTRIBUTE_HEADER}__}" th:replace="~{header :: nav}" />
+ 	<nav th:unless="${__${@errorController.ATTRIBUTE_HEADER}__}" th:replace="~{${@itemisApplication.VIEW_HEADER} :: nav}" />
  	<hr th:if="${__${@errorController.ATTRIBUTE_HEADER}__}" />
 	<div class="container text-center" th:with="invalidOrExpired=param.__${@errorController.PARAM_INVALID}__ != null or param.__${@errorController.PARAM_EXPIRED}__ != null">
 		<h1 th:text="#{error.report}" />

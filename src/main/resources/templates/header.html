@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
-<head th:fragment="header">
+<head>
 	<meta charset="UTF-8">
 	<title th:text="#{app.title}"></title>
 	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
@@ -13,7 +13,7 @@
 	</script>
 </head>
 <body class="container">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top" th:fragment="nav">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
 	    <div class="container">
 	        <a class="navbar-brand" th:href="${@environment.getProperty(@homeController.PATH_ROOT)}" th:text="#{app.title}" />
 	        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
@@ -23,16 +23,16 @@
 	        </button>
 	        <div class="collapse navbar-collapse" id="navbarResponsive">
 	            <ul class="navbar-nav ml-auto">
-	                <li class="nav-item active" sec:authorize="!isAuthenticated()">
+	                <li class="nav-item active" sec:authorize="!isAuthenticated() || #authentication.name==null">
 	                    <a class="nav-link" th:href="${@environment.getProperty(@loginController.PATH_LOGIN)}" th:text="#{app.login}" />
 	                </li>
-	                <li class="nav-item active" sec:authorize="!isAuthenticated()">
+	                <li class="nav-item active" sec:authorize="!isAuthenticated() || #authentication.name==null">
 	                    <a class="nav-link" th:href="${@environment.getProperty(@registerController.PATH_REGISTER)}" th:text="#{app.register}" />
 	                </li>
-	                <li class="nav-item active" sec:authorize="isAuthenticated()">
+	                <li class="nav-item active" sec:authorize="isAuthenticated() && #authentication.name!=null">
 	                    <a class="navbar-brand" th:href="${@environment.getProperty(@profileController.PATH_PROFILE)}" th:text="#{app.welcome(${#authentication.name})}" />
 	                </li>
-	                <li class="nav-item active" sec:authorize="isAuthenticated()">
+	                <li class="nav-item active" sec:authorize="isAuthenticated() &&  #authentication.name!=null">
 	                    <a class="nav-link" th:href="${@environment.getProperty(@loginController.PATH_LOGOUT)}" th:onclick="confirmLogout(event)" th:text="#{app.logout}" />
 	                </li>
 	                <li class="nav-item dropdown">

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
+<head th:replace="~{${@itemisApplication.VIEW_HEADER} :: head}" />
+<body>
+ 	<nav th:replace="~{${@itemisApplication.VIEW_HEADER} :: nav}" />
+	<div class="container text-center">
+		<div>
+			<h1 th:text="${param.__${@loginController.PARAM_LOGOUT}__} ? #{app.logout} : #{app.login}" />
+		</div>
+        <div th:if="${param.__${@loginController.PARAM_ERROR}__}">
+            <div class="alert alert-danger">
+				<label th:text="#{login.failed}" />
+			</div>
+        </div>
+		<div th:if="${param.__${@loginController.PARAM_LOGOUT}__}">
+          <div class="alert alert-info">
+           	<label th:text="#{logout.success}" />
+          </div>
+        </div>
+		<form th:action="@{#}" 
+			method="post" style="max-width: 600px; margin: 0 auto;">
+		<div class="m-3">
+			<div class="form-group row">
+				<label class="col-4 col-form-label text-left" th:text="#{user.name}" />
+				<div class="col-8">
+					<input type="text" th:name="${@loginController.FIELD_USERNAME}" class="form-control" required autofocus/>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label class="col-4 col-form-label text-left" th:text="#{user.password}" />
+				<div class="col-8">
+					<input type="password" th:name="${@loginController.FIELD_PASSWORD}" class="form-control" required />
+				</div>
+			</div>
+			
+			<div>
+				<button type="submit" class="btn btn-primary">
+					<label th:text="#{login.submit}" />
+				</button> 
+			</div>
+		</div>
+		</form>
+	</div>
+	<div th:if="${param.__${@loginController.PARAM_LOGOUT}__}">
+		<script th:inline="javascript">
+			$(window).on('load', function() {
+				setTimeout( function() {
+					alert(/*[[#{logout.success}]]*/);
+					window.location.replace("[(${@environment.getProperty(@homeController.PATH_ROOT)})]");
+				}, 1000);
+			});
+       	</script>
+    </div>
+</body>
+</html>
