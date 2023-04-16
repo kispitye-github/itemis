@@ -8,7 +8,7 @@ import hu.kispitye.itemis.dao.HibernateRepositoryTest;
 
 @EntityScan(basePackageClasses = {User.class, NamedEntityWithUser.class})
 @EnableJpaRepositories(basePackageClasses = {HibernateRepository.class})
-public abstract class NamedEntityWithUserRepositoryTest<R extends HibernateRepository<T>, T extends NamedEntityWithUser> extends HibernateRepositoryTest<R, T> {
+public abstract class NamedEntityWithUserRepositoryTest<R extends HibernateRepository<T>, T extends NamedEntityWithUser<T>> extends HibernateRepositoryTest<R, T> {
 
 	protected abstract T newEntity(User user);
 

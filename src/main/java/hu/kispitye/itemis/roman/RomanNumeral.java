@@ -28,7 +28,7 @@ public enum RomanNumeral {
     private RomanNumeral(int value) {
         this.value = value;
     }
-    public int value() {
+    public int getValue() {
     	return value;
     }
     

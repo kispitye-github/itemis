@@ -21,7 +21,7 @@ import jakarta.transaction.Transactional;
 @Service
 public class AnalyzerServiceImpl implements AnalyzerService {
 
-	private final static String QUESTION_UNKNOWN="question.unknown";
+	public final static String QUESTION_UNKNOWN="question.unknown";
 	private static final String QUESTION_NUMBER="question.number";
 	private static final String QUESTION_NUMBER_IS="question.number.is";
 	private static final String QUESTION_PRICE_IS="question.price.is";
@@ -33,7 +33,7 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 	private static final String ERROR_NUMBER_MISSING="error.number.missing";
 	private static final String ERROR_PRICE_DEFINITION="error.price.definition";
 	private static final String ERROR_NUMERAL_FORMAT="error.numeral.format";
-	private final static String MAIN_UNCLASSIFIED="main.unclassified";
+	public final static String MAIN_UNCLASSIFIED="main.unclassified";
 	private final static String DEFINITION_UNKNOWN="definition.unknown";
 	private final static String ERROR_NUMERAL_DEFINITION_COUNT = "error.numeral.definition.count";
 	private final static String UNIT_CREATED = "unit.created";

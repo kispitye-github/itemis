@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Entity;
 
-public abstract class NamedEntityTest<T extends NamedEntity> {
+public abstract class NamedEntityTest<T extends NamedEntity<?>> {
 	
 	protected abstract T newEntity();
 		
@@ -91,5 +91,7 @@ public abstract class NamedEntityTest<T extends NamedEntity> {
 	}
 
     @Entity
-    static class TestEntity extends NamedEntity {}
+    static class TestEntity extends NamedEntity<TestEntity> {}
+
+
 }

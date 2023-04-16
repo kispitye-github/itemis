@@ -14,7 +14,7 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "units",
 	uniqueConstraints={@UniqueConstraint(columnNames ={"user_id","name"})})
 @DynamicUpdate
-public class Unit extends NamedEntityWithUser {
+public class Unit extends NamedEntityWithUser<Unit> {
 	
 	@Column(nullable = false)
 	private RomanNumeral numeral;

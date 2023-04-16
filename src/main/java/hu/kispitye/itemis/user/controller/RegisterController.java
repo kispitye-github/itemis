@@ -29,17 +29,17 @@ public class RegisterController {
 	@Autowired
 	private UserService userService;
 	
-	@Value("#{environment[homeController.PATH_ROOT]}")
-	private String rootPath;
+	@Value("${"+LoginController.PATH_LOGOUT+"}")
+	private String logoutPath;
 
-    @GetMapping("#{environment[registerController.PATH_REGISTER]}")
+    @GetMapping("${"+PATH_REGISTER+"}")
     public String showRegistrationForm(Model model) {
-    	if (userService.getCurrentUser()!=null) return "redirect:"+rootPath;
+    	if (userService.getCurrentUser()!=null) return "redirect:"+logoutPath;
         model.addAttribute(ATTRIBUTE_USER, new UserDto());
         return VIEW_REGISTER;
     }
 
-    @PostMapping("#{environment[registerController.PATH_REGISTER]}")
+    @PostMapping("${"+PATH_REGISTER+"}")
     public String registration(@ModelAttribute(ATTRIBUTE_USER) UserDto userData,
                                BindingResult result,
                                Model model) {

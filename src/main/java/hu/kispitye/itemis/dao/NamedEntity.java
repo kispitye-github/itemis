@@ -12,7 +12,7 @@ import jakarta.persistence.Persistence;
 import jakarta.persistence.PersistenceUtil;
 
 @MappedSuperclass
-public abstract class NamedEntity {
+public abstract class NamedEntity<T extends NamedEntity<T>> {
 	@Id
 	@GeneratedValue
 	protected Long id;
@@ -30,8 +30,10 @@ public abstract class NamedEntity {
 		return name;
 	}
 	
-	public void setName(String name) {
+	@SuppressWarnings("unchecked")
+	public T setName(String name) {
 		this.name = name;
+		return (T) this;
 	}
 
 	@Override
@@ -43,15 +45,18 @@ public abstract class NamedEntity {
 		return id;
 	}
 	
-	public void setId(Long id) {
+	@SuppressWarnings("unchecked")
+	public T setId(Long id) {
 		this.id = id;
+		return (T) this;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof NamedEntity)) return false;
 		if (o==this) return true;
-		NamedEntity entity = (NamedEntity)o;
+		@SuppressWarnings("unchecked")
+		NamedEntity<T> entity = (NamedEntity<T>)o;
 		if (getId() != null && entity.getId() != null)  {
 			if (!getId().equals(entity.getId())) return false;
 			PersistenceUtil pu = Persistence.getPersistenceUtil();

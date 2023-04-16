@@ -23,7 +23,7 @@ public class UserTest extends NamedEntityTest<User> {
 	protected void testOtherFields(User user) {
 		assertThat(user.getAdmin()).isNull();
 		user.setAdmin(true);
-		assertThat(user.getAdmin()).isEqualTo(true);
+		assertThat(user.getAdmin()).isTrue();
 		assertThat(user.getPassword()).isNull();
 		user.setPassword(user.toString());
 		assertThat(user.getPassword()).isEqualTo(user.toString());
@@ -50,13 +50,13 @@ public class UserTest extends NamedEntityTest<User> {
 		assertThat(user).isInstanceOf(UserDetails.class);
 		assertThat(user.getUsername()).isEqualTo(getClass().getName());
 		assertThat(user.getPassword()).isEqualTo(getClass().getTypeName());
-		assertThat(user.isAccountNonExpired()).isEqualTo(true);
-		assertThat(user.isAccountNonLocked()).isEqualTo(true);
-		assertThat(user.isCredentialsNonExpired()).isEqualTo(true);
-		assertThat(user.isAdmin()).isEqualTo(false);
+		assertThat(user.isAccountNonExpired()).isTrue();
+		assertThat(user.isAccountNonLocked()).isTrue();
+		assertThat(user.isCredentialsNonExpired()).isTrue();
+		assertThat(user.isAdmin()).isFalse();
 		assertThat(user.getAuthorities()).isEmpty();
 		user.setAdmin(true);
-		assertThat(user.isAdmin()).isEqualTo(true);
+		assertThat(user.isAdmin()).isTrue();
 		assertThat(user.getAuthorities()).isEqualTo(AuthorityUtils.createAuthorityList(Security.ADMIN_ROLE));
 	}
 	

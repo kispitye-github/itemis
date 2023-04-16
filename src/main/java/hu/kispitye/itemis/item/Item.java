@@ -15,7 +15,7 @@ import jakarta.persistence.UniqueConstraint;
 @Table(name = "items",
 	uniqueConstraints={@UniqueConstraint(columnNames ={"user_id","name"})})
 @DynamicUpdate
-public class Item extends NamedEntityWithUser {
+public class Item extends NamedEntityWithUser<Item> {
 	
 	@Column(nullable = false)
 	private BigDecimal price;

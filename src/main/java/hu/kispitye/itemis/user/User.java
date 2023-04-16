@@ -16,7 +16,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 @DynamicUpdate
-public class User extends NamedEntity implements UserDetails {
+public class User extends NamedEntity<User> implements UserDetails {
 	
 	private static final long serialVersionUID = 1L;
 	

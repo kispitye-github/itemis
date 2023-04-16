@@ -25,12 +25,12 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 	
-	@Value("#{environment[homeController.PATH_ROOT]}")
-	private String rootPath;
+	@Value("${"+PATH_LOGOUT+"}")
+	private String logoutPath;
     
-	@GetMapping("#{environment[loginController.PATH_LOGIN]}")
+	@GetMapping("${"+PATH_LOGIN+"}")
     public String login(Model model) {
-    	if (userService.getCurrentUser()!=null) return "redirect:"+rootPath;
+    	if (userService.getCurrentUser()!=null) return "redirect:"+logoutPath;
         return VIEW_LOGIN;
     }
     

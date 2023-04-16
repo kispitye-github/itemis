@@ -12,7 +12,7 @@ public class HomeController {
 	
 	private static final String VIEW_HOME="index";
 
-    @GetMapping("#{environment[homeController.PATH_ROOT]}")
+    @GetMapping("${"+PATH_ROOT+"}")
     public String home(Model model) {
         return VIEW_HOME;
     }

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import hu.kispitye.itemis.dao.NamedEntityTest;
 
-public abstract class NamedEntityWithUserTest<T extends NamedEntityWithUser> extends NamedEntityTest<T> {
+public abstract class NamedEntityWithUserTest<T extends NamedEntityWithUser<T>> extends NamedEntityTest<T> {
 
 	@Test
 	protected void testEqualsWithUser() {
@@ -54,5 +54,5 @@ public abstract class NamedEntityWithUserTest<T extends NamedEntityWithUser> ext
 		
 	}
 
-	static class TestEntityWithUser extends NamedEntityWithUser {}
+	static class TestEntityWithUser extends NamedEntityWithUser<TestEntityWithUser> {}
 }

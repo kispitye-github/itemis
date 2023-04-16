@@ -29,7 +29,7 @@ public class MainController {
 	@Autowired
 	private AnalyzerService analyzerService;
    
-    @PostMapping(value="#{environment[mainController.PATH_MAIN]}", produces="text/plain")
+    @PostMapping(value="${"+PATH_MAIN+"}", produces="text/plain")
     @ResponseBody
     public String main(@RequestParam(PARAM_Q) String q) {
     	AnalyzerService.Result result = analyzerService.analyze(q);

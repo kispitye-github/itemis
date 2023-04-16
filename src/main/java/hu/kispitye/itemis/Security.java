@@ -24,7 +24,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 
 import hu.kispitye.itemis.controller.ErrorController;
+import hu.kispitye.itemis.controller.HomeController;
 import hu.kispitye.itemis.user.User;
+import hu.kispitye.itemis.user.controller.LoginController;
+import hu.kispitye.itemis.user.controller.RegisterController;
 import hu.kispitye.itemis.user.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,19 +59,19 @@ public class Security implements AuthenticationSuccessHandler {
         return new BCryptPasswordEncoder();
     }
 
-	@Value("#{environment[loginController.PATH_LOGIN]}")
+	@Value("${"+LoginController.PATH_LOGIN+"}")
 	private String loginPath;
     
-	@Value("#{environment[loginController.PATH_LOGOUT]}")
+	@Value("${"+LoginController.PATH_LOGOUT+"}")
 	private String logoutPath;
     
-	@Value("#{environment[registerController.PATH_REGISTER]}")
+	@Value("${"+RegisterController.PATH_REGISTER+"}")
 	private String registerPath;
     
-	@Value("#{environment[errorController.PATH_ERROR]}")
+	@Value("${"+ErrorController.PATH_ERROR+"}")
 	private String errorPath;
     
-	@Value("#{environment[homeController.PATH_ROOT]}")
+	@Value("${"+HomeController.PATH_ROOT+"}")
 	private String rootPath;
     
     @Bean

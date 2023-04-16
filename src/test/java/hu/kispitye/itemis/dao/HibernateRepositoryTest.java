@@ -23,7 +23,7 @@ import hu.kispitye.itemis.dao.NamedEntityTest.TestEntity;
 
 @DataJpaTest
 @EnableJpaRepositories(basePackageClasses = {HibernateRepository.class})
-public abstract class HibernateRepositoryTest<R extends HibernateRepository<T>, T extends NamedEntity> {
+public abstract class HibernateRepositoryTest<R extends HibernateRepository<T>, T extends NamedEntity<?>> {
 	
     @Autowired
 	protected R repository;
@@ -46,7 +46,8 @@ public abstract class HibernateRepositoryTest<R extends HibernateRepository<T>, 
     @Test
     void testNotNullableColumn() {
     	T entity = newEntity();
-    	assertThat(entity.getName()).isEqualTo(null);
+    	entity.setName(null);
+    	assertThat(entity.getName()).isNull();
     	Exception exception = assertThrows(expectedNotNullableException(), () -> repository.persist(entity));
     	assertTrue(exception.getMessage().contains("not-null property"));
     }

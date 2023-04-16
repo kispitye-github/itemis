@@ -48,7 +48,7 @@ public class ProfileController {
     @Autowired(required=false)
     private H2ConsoleProperties h2Console;
 	
-    @GetMapping("#{environment[profileController.PATH_PROFILE]}")
+    @GetMapping("${"+PATH_PROFILE+"}")
     public String showProfileForm(Model model) throws SQLException {
     	User user = userService.getCurrentUser(); 
     	if (user.isAdmin()) {
@@ -59,7 +59,7 @@ public class ProfileController {
         return VIEW_PROFILE;
     }
 
-    @PostMapping("#{environment[profileController.PATH_PROFILE]}")
+    @PostMapping("${"+PATH_PROFILE+"}")
     public String changeProfile(@ModelAttribute(ATTRIBUTE_USER) UserDto userData,
                                BindingResult result,
                                Model model) {

@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public User getCurrentUser() {
 	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    if (authentication instanceof AnonymousAuthenticationToken || !authentication.isAuthenticated()) return null;
+	    if (authentication instanceof AnonymousAuthenticationToken || authentication==null || !authentication.isAuthenticated()) return null;
 	    return adjustUser((User)authentication.getPrincipal(), null);
     }
 
