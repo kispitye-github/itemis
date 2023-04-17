@@ -59,6 +59,9 @@ public class ProfileController {
         return VIEW_PROFILE;
     }
 
+    @Value("${"+PATH_PROFILE+"}")
+    private String profilePath;
+    
     @PostMapping("${"+PATH_PROFILE+"}")
     public String changeProfile(@ModelAttribute(ATTRIBUTE_USER) UserDto userData,
                                BindingResult result,
@@ -79,6 +82,6 @@ public class ProfileController {
         user.setUsername(userData.name);
         userService.updateUser(user, pwd);
 
-        return "redirect:"+VIEW_PROFILE+"?"+PARAM_SUCCESS;
+        return "redirect:"+profilePath+"?"+PARAM_SUCCESS;
     }
 }

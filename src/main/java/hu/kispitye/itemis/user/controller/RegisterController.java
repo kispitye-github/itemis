@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import hu.kispitye.itemis.controller.HomeController;
 import hu.kispitye.itemis.user.User;
 import hu.kispitye.itemis.user.dto.UserDto;
 import hu.kispitye.itemis.user.service.UserService;
@@ -32,6 +33,12 @@ public class RegisterController {
 	@Value("${"+LoginController.PATH_LOGOUT+"}")
 	private String logoutPath;
 
+	@Value("${"+HomeController.PATH_ROOT+"}")
+	private String rootPath;
+
+	@Value("${"+PATH_REGISTER+"}")
+	private String registerPath;
+
     @GetMapping("${"+PATH_REGISTER+"}")
     public String showRegistrationForm(Model model) {
     	if (userService.getCurrentUser()!=null) return "redirect:"+logoutPath;
@@ -43,7 +50,7 @@ public class RegisterController {
     public String registration(@ModelAttribute(ATTRIBUTE_USER) UserDto userData,
                                BindingResult result,
                                Model model) {
-    	if (userService.getCurrentUser()!=null) return "redirect:/";
+    	if (userService.getCurrentUser()!=null) return "redirect:"+rootPath;
         User existingUser = userService.findUser(userData.name);
 
         if (existingUser != null) result.rejectValue(FIELD_NAME, "username.exists", "");
@@ -57,6 +64,6 @@ public class RegisterController {
         }
 
         userService.createUser(userData.name, userData.pwd);
-        return "redirect:"+VIEW_REGISTER+"?"+PARAM_SUCCESS;
+        return "redirect:"+registerPath+"?"+PARAM_SUCCESS;
     }
 }
