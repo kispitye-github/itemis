@@ -78,7 +78,7 @@ public class Security implements AuthenticationSuccessHandler {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     	AntPathRequestMatcher h2ConsolePath = h2Console==null?null:AntPathRequestMatcher.antMatcher(h2Console.getPath()+ALLSUBPATHS);
         http
-                .authorizeHttpRequests((authorize) ->
+                .authorizeHttpRequests(authorize ->
                         {
 							authorize
 					        	.requestMatchers(rootPath).permitAll()
@@ -87,10 +87,8 @@ public class Security implements AuthenticationSuccessHandler {
 								.requestMatchers(registerPath+ALLSUBPATHS).permitAll()
 						        .requestMatchers(errorPath+ALLSUBPATHS).permitAll();
 							if (h2ConsolePath!=null) try {
-								authorize
-						        	.requestMatchers(h2ConsolePath).hasAuthority(ADMIN_ROLE)
-							        .and().csrf().ignoringRequestMatchers(h2ConsolePath)
-							        .and().headers().frameOptions().sameOrigin();
+                                authorize.requestMatchers(h2ConsolePath).hasAuthority(ADMIN_ROLE);
+                                http.csrf(csrf -> csrf.ignoringRequestMatchers(h2ConsolePath)).headers(headers -> headers.frameOptions( options -> options.sameOrigin()));
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
