@@ -21,7 +21,7 @@ import hu.kispitye.itemis.user.User;
 public class ItemRepositoryTest extends NamedEntityWithUserRepositoryTest<ItemRepository, Item> {
 
     @Test
-    void testItem() {
+    void testMyItem() {
     	assertEquals(repository.count(), 0);
     	User user = new User("user","pwd");
     	entityManager.persist(user);

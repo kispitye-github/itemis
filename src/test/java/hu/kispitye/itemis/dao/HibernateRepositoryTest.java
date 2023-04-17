@@ -93,7 +93,7 @@ public abstract class HibernateRepositoryTest<R extends HibernateRepository<T>, 
     @Test
     void testUpdate() {
     	T entity = newEntity();
-    	entity.setName("merge");
+    	entity.setName("update");
     	repository.persist(entity);
     	entity.setName(getClass().getSimpleName());
     	T entityp = testResult(true, entity, repository.update(entity));
