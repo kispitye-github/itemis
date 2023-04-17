@@ -17,7 +17,7 @@ import jakarta.persistence.UniqueConstraint;
 public class Unit extends NamedEntityWithUser<Unit> {
 	
 	@Column(nullable = false)
-	private RomanNumeral numeral;
+	RomanNumeral numeral;
 
 	Unit() {}
 

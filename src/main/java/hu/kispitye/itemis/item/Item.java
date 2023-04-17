@@ -18,7 +18,7 @@ import jakarta.persistence.UniqueConstraint;
 public class Item extends NamedEntityWithUser<Item> {
 	
 	@Column(nullable = false)
-	private BigDecimal price;
+	BigDecimal price;
 	
 	Item() {}
 

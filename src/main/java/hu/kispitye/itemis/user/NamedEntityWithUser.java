@@ -13,7 +13,7 @@ import jakarta.persistence.MappedSuperclass;
 public abstract class NamedEntityWithUser<T extends NamedEntityWithUser<T>> extends NamedEntity<NamedEntityWithUser<T>> {
 	@ManyToOne(optional=false, fetch = FetchType.LAZY)
 	@NaturalId
-	private User user;
+	User user;
 
 	public User getUser() {
 		return user;
