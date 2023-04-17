@@ -20,9 +20,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import hu.kispitye.itemis.dao.NamedEntityTest.TestEntity;
+import jakarta.transaction.Transactional;
 
-@DataJpaTest
-@EnableJpaRepositories(basePackageClasses = {HibernateRepository.class})
+@Transactional
 public abstract class HibernateRepositoryTest<R extends HibernateRepository<T>, T extends NamedEntity<?>> {
 	
     @Autowired
@@ -116,7 +116,9 @@ public abstract class HibernateRepositoryTest<R extends HibernateRepository<T>, 
         assertThrows(UnsupportedOperationException.class, () -> repository.saveAllAndFlush(Arrays.asList(entity)));
     }
     
+    @DataJpaTest
     @EntityScan(basePackageClasses = {TestEntity.class})
+    @EnableJpaRepositories(basePackageClasses = {HibernateRepository.class})
     static class TestEntityTest extends HibernateRepositoryTest<HibernateRepository<TestEntity>, TestEntity> { 
 
     	@Override

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -13,6 +14,7 @@ import hu.kispitye.itemis.dao.HibernateRepository;
 import hu.kispitye.itemis.dao.HibernateRepositoryTest;
 import hu.kispitye.itemis.user.dao.UserRepository;
 
+@DataJpaTest
 @EntityScan(basePackageClasses = {User.class})
 @EnableJpaRepositories(basePackageClasses = {UserRepository.class, HibernateRepository.class})
 public class UserRepositoryTest extends HibernateRepositoryTest<UserRepository, User> {
