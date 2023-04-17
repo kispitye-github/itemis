@@ -15,14 +15,12 @@ import hu.kispitye.itemis.roman.RomanNumeral;
 import hu.kispitye.itemis.unit.dao.UnitRepository;
 import hu.kispitye.itemis.user.NamedEntityWithUserRepositoryTest;
 import hu.kispitye.itemis.user.User;
-import jakarta.transaction.Transactional;
 
 @EntityScan(basePackageClasses = {User.class, Unit.class})
 @EnableJpaRepositories(basePackageClasses = {UnitRepository.class, HibernateRepository.class})
 public class UnitRepositoryTest extends NamedEntityWithUserRepositoryTest<UnitRepository, Unit> {
 
     @Test
-    @Transactional
     void testUnit() {
     	assertEquals(repository.count(), 0);
     	User user = new User("user","pwd");

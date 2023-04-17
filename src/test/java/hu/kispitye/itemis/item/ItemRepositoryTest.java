@@ -15,14 +15,12 @@ import hu.kispitye.itemis.dao.HibernateRepository;
 import hu.kispitye.itemis.item.dao.ItemRepository;
 import hu.kispitye.itemis.user.NamedEntityWithUserRepositoryTest;
 import hu.kispitye.itemis.user.User;
-import jakarta.transaction.Transactional;
 
 @EntityScan(basePackageClasses = {User.class, Item.class})
 @EnableJpaRepositories(basePackageClasses = {ItemRepository.class, HibernateRepository.class})
 public class ItemRepositoryTest extends NamedEntityWithUserRepositoryTest<ItemRepository, Item> {
 
     @Test
-    @Transactional
     void testItem() {
     	assertEquals(repository.count(), 0);
     	User user = new User("user","pwd");

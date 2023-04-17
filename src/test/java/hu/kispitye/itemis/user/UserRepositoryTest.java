@@ -12,7 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import hu.kispitye.itemis.dao.HibernateRepository;
 import hu.kispitye.itemis.dao.HibernateRepositoryTest;
 import hu.kispitye.itemis.user.dao.UserRepository;
-import jakarta.transaction.Transactional;
 
 @EntityScan(basePackageClasses = {User.class})
 @EnableJpaRepositories(basePackageClasses = {UserRepository.class, HibernateRepository.class})
@@ -23,7 +22,6 @@ public class UserRepositoryTest extends HibernateRepositoryTest<UserRepository, 
 		return new User().setPassword("pwd");
 	}
 
-	@Transactional
 	@Test
     void testUser() {
     	assertEquals(repository.count(), 0);
