@@ -18,7 +18,7 @@ public class RomanNumberTest {
 		{"", "M", "MM", "MMM"}	
 	};
 	
-	private static final int MAXTESTLENGTH = 8;
+	private static final int MAXTESTLENGTH = 10;
 	
 	private void getValids(String prefix, int value, Set<RomanNumber> valids, int currentDigitIndex) {
 		assertThat(currentDigitIndex<digits.length);
