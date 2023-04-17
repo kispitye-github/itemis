@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.TestExecutionListeners;
 
 import hu.kispitye.itemis.dao.HibernateRepository;
 import hu.kispitye.itemis.item.dao.ItemRepository;
@@ -20,6 +21,7 @@ import hu.kispitye.itemis.user.User;
 @DataJpaTest
 @EntityScan(basePackageClasses = {User.class, Item.class})
 @EnableJpaRepositories(basePackageClasses = {ItemRepository.class, HibernateRepository.class})
+@TestExecutionListeners(listeners = {}, inheritListeners = false, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 public class ItemRepositoryTest extends NamedEntityWithUserRepositoryTest<ItemRepository, Item> {
 
     @Test
