@@ -18,6 +18,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import hu.kispitye.itemis.dao.NamedEntityTest.TestEntity;
 import jakarta.transaction.Transactional;
@@ -119,6 +122,7 @@ public abstract class HibernateRepositoryTest<R extends HibernateRepository<T>, 
     @DataJpaTest
     @EntityScan(basePackageClasses = {TestEntity.class})
     @EnableJpaRepositories(basePackageClasses = {HibernateRepository.class})
+    @TestExecutionListeners({DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
     static class TestEntityTest extends HibernateRepositoryTest<HibernateRepository<TestEntity>, TestEntity> { 
 
     	@Override

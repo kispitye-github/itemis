@@ -10,6 +10,9 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
+import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import hu.kispitye.itemis.dao.HibernateRepository;
 import hu.kispitye.itemis.dao.HibernateRepositoryTest;
@@ -20,6 +23,7 @@ import hu.kispitye.itemis.user.User;
 @DataJpaTest
 @EntityScan(basePackageClasses = {User.class, Unit.class})
 @EnableJpaRepositories(basePackageClasses = {UnitRepository.class, HibernateRepository.class})
+@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
 public class UnitRepositoryTest extends HibernateRepositoryTest<UnitRepository, Unit> {
 
     @Test
