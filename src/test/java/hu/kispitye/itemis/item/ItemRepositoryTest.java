@@ -5,21 +5,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.context.BootstrapContext;
-import org.springframework.test.context.BootstrapWith;
-import org.springframework.test.context.MergedContextConfiguration;
 import org.springframework.test.context.TestContext;
-import org.springframework.test.context.TestContextBootstrapper;
-import org.springframework.test.context.TestExecutionListener;
 import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.support.DefaultTestContextBootstrapper;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
@@ -31,42 +24,25 @@ import hu.kispitye.itemis.user.User;
 @DataJpaTest
 @EntityScan(basePackageClasses = {User.class, Item.class})
 @EnableJpaRepositories(basePackageClasses = {ItemRepository.class, HibernateRepository.class})
-@TestExecutionListeners({DependencyInjectionTestExecutionListener.class,TransactionalTestExecutionListener.class})
-@BootstrapWith(ItemRepositoryTest.Hack.class)
+@TestExecutionListeners({ItemRepositoryTest.Hack.class, DependencyInjectionTestExecutionListener.class,/*TransactionalTestExecutionListener.class*/})
 public class ItemRepositoryTest extends HibernateRepositoryTest<ItemRepository, Item> {
 
-	static class Hack implements TestContextBootstrapper {
-		private DefaultTestContextBootstrapper delegate = new DefaultTestContextBootstrapper(); 
-		public Hack() {
+	static class Hack extends TransactionalTestExecutionListener {
+		public Hack()  {}
+
+		@Override
+		public void beforeTestMethod(final TestContext testContext) throws Exception {
+			try  {
+				super.beforeTestMethod(testContext);
+			} catch (Exception e)  {
+				System.err.println("!!!!HACK!!!!"+e);
+				afterTestMethod(testContext);
+				super.beforeTestMethod(testContext);
+			}
 			
+
 		}
-			@Override
-			public
-			List<TestExecutionListener> getTestExecutionListeners() {
-				List<TestExecutionListener> listeners = delegate.getTestExecutionListeners();
-listeners.stream().forEach(listener -> System.out.println("!!!!HACK!!!!"+listener));
-				return listeners;
-		}
-
-			@Override
-			public void setBootstrapContext(BootstrapContext bootstrapContext) {
-				delegate.setBootstrapContext(bootstrapContext);
-			}
-
-			@Override
-			public BootstrapContext getBootstrapContext() {
-				return delegate.getBootstrapContext();
-			}
-
-			@Override
-			public TestContext buildTestContext() {
-				return delegate.buildTestContext();
-			}
-
-			@Override
-			public MergedContextConfiguration buildMergedContextConfiguration() {
-				return delegate.buildMergedContextConfiguration();
-			}
+		
 	}
 	
 	@Test
