@@ -10,7 +10,7 @@ public class HomeController {
 
 	public static final String PATH_ROOT="path.root";
 	
-	private static final String VIEW_HOME="index";
+	public static final String VIEW_HOME="index";
 
     @GetMapping("${"+PATH_ROOT+"}")
     public String home(Model model) {

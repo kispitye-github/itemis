@@ -45,7 +45,7 @@ public class Security implements AuthenticationSuccessHandler {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
+    @Autowired(required=false)
     private UserService userService;
 
     @Autowired
