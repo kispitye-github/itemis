@@ -18,34 +18,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
 import hu.kispitye.itemis.dao.NamedEntityTest.TestEntity;
+import hu.kispitye.itemis.GitHubHack;
 
 @DataJpaTest
 @EnableJpaRepositories(basePackageClasses = {HibernateRepository.class})
-@TestExecutionListeners({HibernateRepositoryTest.Hack.class, DependencyInjectionTestExecutionListener.class})
+@TestExecutionListeners({GitHubHack.class, DependencyInjectionTestExecutionListener.class})
 public abstract class HibernateRepositoryTest<R extends HibernateRepository<T>, T extends NamedEntity<?>> {
-
-	static class Hack extends TransactionalTestExecutionListener {
-		public Hack()  {}
-
-		@Override
-		public void beforeTestMethod(final TestContext testContext) throws Exception {
-			try  {
-				super.beforeTestMethod(testContext);
-			} catch (Exception e)  {
-System.err.println("!!!!HACK!!!!"+e); //TODO
-				afterTestMethod(testContext);
-				super.beforeTestMethod(testContext);
-			}
-		}
-		
-	}
-	
 
     @Autowired
 	protected R repository;

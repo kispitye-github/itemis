@@ -12,15 +12,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 import org.springframework.test.web.servlet.MockMvc;
 
 import hu.kispitye.itemis.user.service.UserService;
 import hu.kispitye.itemis.user.User;
+import hu.kispitye.itemis.GitHubHack;
 import hu.kispitye.itemis.Security;
 import hu.kispitye.itemis.analyze.service.AnalyzerService;
 
 @Import(Security.class)
 @WebMvcTest
+@TestExecutionListeners({GitHubHack.class, DependencyInjectionTestExecutionListener.class})
 public class HomeControllerTest {
 
     @Autowired
