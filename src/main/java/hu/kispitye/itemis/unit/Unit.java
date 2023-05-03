@@ -8,11 +8,9 @@ import hu.kispitye.itemis.user.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "units",
-	uniqueConstraints={@UniqueConstraint(columnNames ={"user_id","name"})})
+@Table(name = "units")
 @DynamicUpdate
 public class Unit extends NamedEntityWithUser<Unit> {
 	

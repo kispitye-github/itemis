@@ -2,6 +2,8 @@ package hu.kispitye.itemis.roman;
 
 import java.util.*;
 
+import static hu.kispitye.itemis.ItemisConstants.*;
+
 public class RomanNumber {
 	private final RomanNumeral numerals[];
 	
@@ -78,7 +80,7 @@ public class RomanNumber {
 	}
 	
 	public int getValue() throws NumberFormatException {
-		if (!isValid()) throw new NumberFormatException("Invalid Roman Number: "+toString());
+		if (!isValid()) throw new NumberFormatException(toString());
 		return value;
 	}
 	
@@ -92,17 +94,16 @@ public class RomanNumber {
 	public String toString() {
 		StringBuffer sb = new StringBuffer(getStringValue());
 		sb.append(" (");
-		if (isValid()) sb.append(value);
-		else sb.append("INVALID");
+		if (isValid()) sb.append('=').append(value);
+		else sb.append(INVALID_ROMAN_NUMBER);
 		sb.append(")");
 		return sb.toString();
 	}
 	
 	@Override
 	public boolean equals(Object o)  {
-		if (!(o instanceof RomanNumber)) return false;
-		if (o==this) return true;
-		RomanNumber number = (RomanNumber)o;
+		if (!(o instanceof RomanNumber number)) return false;
+		if (number==this) return true;
 		if (!isValid() || !number.isValid()) return false;
 		return this.value==number.value;
 	}

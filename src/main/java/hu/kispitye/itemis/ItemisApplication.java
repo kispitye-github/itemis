@@ -25,14 +25,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @ControllerAdvice
 @SpringBootApplication
-public class ItemisApplication extends SpringBootServletInitializer implements WebMvcConfigurer {
-	
-	public static final String LANG_EN="en";
-	public static final String LANG_DE="de";
-	public static final String LANG_HU="hu";
-	public static final String PARAM_LANG="lang";
-	
-	public static final String VIEW_HEADER = "header";
+public class ItemisApplication extends SpringBootServletInitializer implements WebMvcConfigurer, ItemisConstants {
 	
 	@Autowired(required=false)
 	private UserService userService;

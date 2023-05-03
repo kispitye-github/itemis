@@ -36,6 +36,8 @@ import hu.kispitye.itemis.user.dao.UserRepository;
 import hu.kispitye.itemis.user.service.UserService;
 import hu.kispitye.itemis.user.service.UserServiceImpl;
 
+import static hu.kispitye.itemis.ItemisConstants.*;
+
 @DataJpaTest
 @EntityScan(basePackageClasses = {User.class, Item.class, Unit.class})
 @EnableJpaRepositories(basePackageClasses = {UserRepository.class, ItemRepository.class, UnitRepository.class, HibernateRepository.class})
@@ -133,7 +135,7 @@ public class AnalyzerServiceTest {
     	assertThat(result.getErrors().size()).isEqualTo(1);
     	assertThat(result.getResult()).isEmpty();
     	hu.kispitye.itemis.analyze.service.AnalyzerService.Result.Error error = result.getErrors().get(0);
-    	assertThat(error.key()).isEqualTo(AnalyzerServiceImpl.MAIN_UNCLASSIFIED);
+    	assertThat(error.key()).isEqualTo(MAIN_UNCLASSIFIED);
     	assertThat(error.sender()).isEqualTo("Run");
     }
 
@@ -209,7 +211,7 @@ public class AnalyzerServiceTest {
     	Result result = analyzerService.analyze("how much is pish tegj glob glob ?");
     	assertThat(result).isNotNull();
     	assertThat(result.getErrors().size()).isEqualTo(0);
-    	assertThat(getAnswer(result)).isEqualTo("pish tegj glob glob is XLII (42)");
+    	assertThat(getAnswer(result)).isEqualTo("pish tegj glob glob is XLII (=42)");
     }
 
     @Test
@@ -248,9 +250,9 @@ public class AnalyzerServiceTest {
     	assertThat(result).isNotNull();
     	assertThat(result.getErrors().size()).isEqualTo(1);
     	hu.kispitye.itemis.analyze.service.AnalyzerService.Result.Error error = result.getErrors().get(0);
-    	assertThat(error.key()).isEqualTo(AnalyzerServiceImpl.QUESTION_UNKNOWN);
+    	assertThat(error.key()).isEqualTo(QUESTION_UNKNOWN);
     	assertThat(error.sender()).isEqualTo("answer");
-    	assertThat(getMessage(AnalyzerServiceImpl.QUESTION_UNKNOWN, (Object[]) null)).contains("I have no idea what you are talking about");
+    	assertThat(getMessage(QUESTION_UNKNOWN, (Object[]) null)).contains("I have no idea what you are talking about");
     }
 
 }

@@ -18,20 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import static hu.kispitye.itemis.ItemisConstants.*;
+
+
 @Controller
 public class ProfileController {
-
-	public static final String PATH_PROFILE="path.profile";
-	public static final String ATTRIBUTE_DB="db";
-	public static final String ATTRIBUTE_CONSOLE="console";
-	public static final String ATTRIBUTE_USER="user";
-	public static final String FIELD_NAME="name";
-	public static final String FIELD_PWD="pwd";
-	public static final String FIELD_PWD2="pwd2";
-	public static final String FIELD_ADMIN="admin";
-	public static final String PARAM_SUCCESS="success";
-	
-	private static final String VIEW_PROFILE="user/profile";
 
 	@Autowired
 	private UserService userService;

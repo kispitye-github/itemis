@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import hu.kispitye.itemis.controller.HomeController;
 import hu.kispitye.itemis.user.User;
 import hu.kispitye.itemis.user.dto.UserDto;
 import hu.kispitye.itemis.user.service.UserService;
@@ -15,25 +14,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import static hu.kispitye.itemis.ItemisConstants.*;
+
 @Controller
 public class RegisterController {
 
-	public static final String PATH_REGISTER="path.register";
-	public static final String ATTRIBUTE_USER="user";
-	public static final String FIELD_NAME="name";
-	public static final String FIELD_PWD="pwd";
-	public static final String FIELD_PWD2="pwd2";
-	public static final String PARAM_SUCCESS="success";
-	
-	private static final String VIEW_REGISTER="user/register";
-	
 	@Autowired
 	private UserService userService;
 	
-	@Value("${"+LoginController.PATH_LOGOUT+"}")
+	@Value("${"+PATH_LOGOUT+"}")
 	private String logoutPath;
 
-	@Value("${"+HomeController.PATH_ROOT+"}")
+	@Value("${"+PATH_ROOT+"}")
 	private String rootPath;
 
 	@Value("${"+PATH_REGISTER+"}")

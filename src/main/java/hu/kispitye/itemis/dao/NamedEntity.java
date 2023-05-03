@@ -13,11 +13,16 @@ import jakarta.persistence.PersistenceUtil;
 
 @MappedSuperclass
 public abstract class NamedEntity<T extends NamedEntity<T>> {
+
+	public static final String NAME_ATTRIBUTE = "name";
+	public static final String ID_ATTRIBUTE = "id";
+	
 	@Id
 	@GeneratedValue
+	@Column(name = ID_ATTRIBUTE)
 	protected Long id;
 
-	@Column(nullable = false, unique = true, length = 42)
+	@Column(name = NAME_ATTRIBUTE, nullable = false, unique = true, length = 42)
 	@NaturalId(mutable = true)
 	protected String name;    	
 
@@ -30,10 +35,9 @@ public abstract class NamedEntity<T extends NamedEntity<T>> {
 		return name;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public T setName(String name) {
+	public NamedEntity<T> setName(String name) {
 		this.name = name;
-		return (T) this;
+		return this;
 	}
 
 	@Override
@@ -45,22 +49,19 @@ public abstract class NamedEntity<T extends NamedEntity<T>> {
 		return id;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public T setId(Long id) {
+	public NamedEntity<T> setId(Long id) {
 		this.id = id;
-		return (T) this;
+		return this;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
-		if (!(o instanceof NamedEntity)) return false;
-		if (o==this) return true;
-		@SuppressWarnings("unchecked")
-		NamedEntity<T> entity = (NamedEntity<T>)o;
+		if (!(o instanceof NamedEntity<?> entity)) return false;
+		if (entity==this) return true;
 		if (getId() != null && entity.getId() != null)  {
 			if (!getId().equals(entity.getId())) return false;
 			PersistenceUtil pu = Persistence.getPersistenceUtil();
-			if (!pu.isLoaded(this, "name") || !pu.isLoaded(entity, "name")) return true;  
+			if (!pu.isLoaded(this, NAME_ATTRIBUTE) || !pu.isLoaded(entity, NAME_ATTRIBUTE)) return true;  
 		}
 		return Objects.equals(getKey(), entity.getKey());
 	}

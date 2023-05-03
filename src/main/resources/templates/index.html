@@ -5,9 +5,9 @@
  	<nav th:replace="~{${@itemisApplication.VIEW_HEADER} :: nav}" />
 	<div class="container text-center">
 		<div class="button-group" sec:authorize="!isAuthenticated() || #authentication.name==null">
-			<h1 th:text="#{app.empty}" />
+			<h1 th:text="#{__${@itemisApplication.APP_EMPTY}__}" />
 	    </div>
-		<div class="button-group" sec:authorize="isAuthenticated() && #authentication.name!=null" th:insert="~{${@mainController.VIEW_MAIN} :: body}">
+		<div class="button-group" sec:authorize="isAuthenticated() && #authentication.name!=null" th:insert="~{${@itemisApplication.VIEW_MAIN} :: body}">
 		</div>
 	</div>
 </body>

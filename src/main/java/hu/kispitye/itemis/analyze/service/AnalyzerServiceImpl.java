@@ -9,6 +9,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
+import static hu.kispitye.itemis.ItemisConstants.*;
 import hu.kispitye.itemis.item.Item;
 import hu.kispitye.itemis.item.service.ItemService;
 import hu.kispitye.itemis.roman.*;
@@ -20,37 +21,6 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class AnalyzerServiceImpl implements AnalyzerService {
-
-	public final static String QUESTION_UNKNOWN="question.unknown";
-	private static final String QUESTION_NUMBER="question.number";
-	private static final String QUESTION_NUMBER_IS="question.number.is";
-	private static final String QUESTION_PRICE_IS="question.price.is";
-	private static final String QUESTION_PRICE="question.price";
-	private static final String QUESTION_CREDIT="question.credit";
-	private static final String DEFINITION_PRICE_IS="definition.price.is";
-	private static final String DEFINITION_NUMERAL_IS="definition.numeral.is";
-	private static final String ERROR_NUMBER_FORMAT="error.number.format";
-	private static final String ERROR_NUMBER_MISSING="error.number.missing";
-	private static final String ERROR_PRICE_DEFINITION="error.price.definition";
-	private static final String ERROR_NUMERAL_FORMAT="error.numeral.format";
-	public final static String MAIN_UNCLASSIFIED="main.unclassified";
-	private final static String DEFINITION_UNKNOWN="definition.unknown";
-	private final static String ERROR_NUMERAL_DEFINITION_COUNT = "error.numeral.definition.count";
-	private final static String UNIT_CREATED = "unit.created";
-	private final static String UNIT_UPDATED_NUMERAL = "unit.updated.numeral";
-	private final static String UNIT_KNOWN = "unit.known";
-	private final static String ERROR_UNIT_MISSING = "error.unit.missing";
-	private final static String ERROR_INVALID_NUMERALS = "error.invalid.numerals";
-	private final static String ERROR_UNKNOWN_UNIT = "error.unknown.unit";
-	private final static String ERROR_PRICE_DEFINITION_ITEM = "error.price.definition.item";
-	private final static String ERROR_PRICE_DEFINITION_COUNT = "error.price.definition.count";
-	private final static String ITEM_CREATED = "item.created";
-	private final static String ITEM_KNOWN = "item.known";
-	private final static String ITEM_PRICE_CHANGED = "item.price.changed";
-	private final static String ERROR_ITEM_MISSING = "error.item.missing";
-	private final static String ERROR_ITEM_COUNT = "error.item.count";
-	private final static String ERROR_UNKNOWN_ITEM = "error.unknown.item";
-	
 
 	@Override
 	@Transactional
@@ -84,7 +54,6 @@ public class AnalyzerServiceImpl implements AnalyzerService {
 			return messageSource.getMessage(key, args, LocaleContextHolder.getLocale());
 		}
 
-		
 		private List<String> tokens;
 		private List<Error> errors = new ArrayList<>();
 		

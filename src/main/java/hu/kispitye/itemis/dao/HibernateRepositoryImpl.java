@@ -6,7 +6,6 @@ import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
-@SuppressWarnings({"deprecation","all"}) //Eclipse bug: Unnecessary
 public class HibernateRepositoryImpl<T> implements HibernateRepository<T> {
 
 	@PersistenceContext

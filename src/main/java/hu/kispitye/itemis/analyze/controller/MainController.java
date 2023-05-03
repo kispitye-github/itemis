@@ -11,17 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static hu.kispitye.itemis.ItemisConstants.*;
 import hu.kispitye.itemis.analyze.service.AnalyzerService;
 
 @Controller
 public class MainController {
-
-	public static final String PATH_MAIN="path.main";
-	public static final String PARAM_Q="q";
-	
-	public static final String VIEW_MAIN = "analyze/main";
-
-	private final static String ERROR_LIST="error.list";
 
 	@Autowired
 	private MessageSource messageSource;

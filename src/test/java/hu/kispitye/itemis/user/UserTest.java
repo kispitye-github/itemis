@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import hu.kispitye.itemis.Security;
 import hu.kispitye.itemis.dao.NamedEntityTest;
 import hu.kispitye.itemis.user.User.LocaleConverter;
+
+import static hu.kispitye.itemis.ItemisConstants.*;
 
 public class UserTest extends NamedEntityTest<User> {
 
@@ -57,7 +58,7 @@ public class UserTest extends NamedEntityTest<User> {
 		assertThat(user.getAuthorities()).isEmpty();
 		user.setAdmin(true);
 		assertThat(user.isAdmin()).isTrue();
-		assertThat(user.getAuthorities()).isEqualTo(AuthorityUtils.createAuthorityList(Security.ADMIN_ROLE));
+		assertThat(user.getAuthorities()).isEqualTo(AuthorityUtils.createAuthorityList(ADMIN_ROLE));
 	}
 	
 	@Test

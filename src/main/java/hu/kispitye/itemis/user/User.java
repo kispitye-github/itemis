@@ -9,9 +9,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import hu.kispitye.itemis.Security;
 import hu.kispitye.itemis.dao.NamedEntity;
 import jakarta.persistence.*;
+
+import static hu.kispitye.itemis.ItemisConstants.*;
+
 
 @Entity
 @Table(name = "users")
@@ -85,7 +87,7 @@ public class User extends NamedEntity<User> implements UserDetails {
 		return this;
 	}
 
-	private static final List<GrantedAuthority> ADMIN_AUTHORITY = AuthorityUtils.createAuthorityList(Security.ADMIN_ROLE); 
+	private static final List<GrantedAuthority> ADMIN_AUTHORITY = AuthorityUtils.createAuthorityList(ADMIN_ROLE); 
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

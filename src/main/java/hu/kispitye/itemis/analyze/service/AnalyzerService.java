@@ -8,7 +8,7 @@ public interface AnalyzerService {
 	public interface Result {
 		List<String> getResult();
 		List<Error> getErrors();
-		public record Error(String sender, String key, Object... params) {};
+		record Error(String sender, String key, Object... params) {};
 	}
 
 }

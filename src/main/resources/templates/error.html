@@ -1,42 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}">
-<head th:unless="${__${@errorController.ATTRIBUTE_HEADER}__}" th:replace="~{${@itemisApplication.VIEW_HEADER} :: head}" />
+<head th:unless="${__${@itemisApplication.ATTRIBUTE_HEADER}__}" th:replace="~{${@itemisApplication.VIEW_HEADER} :: head}" />
 <body>
- 	<nav th:unless="${__${@errorController.ATTRIBUTE_HEADER}__}" th:replace="~{${@itemisApplication.VIEW_HEADER} :: nav}" />
- 	<hr th:if="${__${@errorController.ATTRIBUTE_HEADER}__}" />
-	<div class="container text-center" th:with="invalidOrExpired=param.__${@errorController.PARAM_INVALID}__ != null or param.__${@errorController.PARAM_EXPIRED}__ != null">
+ 	<nav th:unless="${__${@itemisApplication.ATTRIBUTE_HEADER}__}" th:replace="~{${@itemisApplication.VIEW_HEADER} :: nav}" />
+ 	<hr th:if="${__${@itemisApplication.ATTRIBUTE_HEADER}__}" />
+	<div class="container text-center" th:with="invalidOrExpired=param.__${@itemisApplication.PARAM_INVALID}__ != null or param.__${@itemisApplication.PARAM_EXPIRED}__ != null">
 		<h1 th:text="#{error.report}" />
         <div th:if="${invalidOrExpired}" th:text="#{error.report.invalid}" />
         <div th:unless="${invalidOrExpired}" class="m-3">
-			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_PATH}__}">
+			<div class="form-group row" th:if="${__${@itemisApplication.ATTRIBUTE_PATH}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.path}" />
-				<span th:text="${__${@errorController.ATTRIBUTE_PATH}__}" />
+				<span th:text="${__${@itemisApplication.ATTRIBUTE_PATH}__}" />
 			</div>
-			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_TIMESTAMP}__}">
+			<div class="form-group row" th:if="${__${@itemisApplication.ATTRIBUTE_TIMESTAMP}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.timestamp}" />
-				<span th:text="${__${@errorController.ATTRIBUTE_TIMESTAMP}__}" />
+				<span th:text="${__${@itemisApplication.ATTRIBUTE_TIMESTAMP}__}" />
 			</div>
-			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_STATUS}__}">
+			<div class="form-group row" th:if="${__${@itemisApplication.ATTRIBUTE_STATUS}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.status}" />
-				<span th:text="${__${@errorController.ATTRIBUTE_STATUS}__}" />
+				<span th:text="${__${@itemisApplication.ATTRIBUTE_STATUS}__}" />
 			</div>
-			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_ERROR}__}">
+			<div class="form-group row" th:if="${__${@itemisApplication.ATTRIBUTE_ERROR}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.error}" />
-				<span th:text="${__${@errorController.ATTRIBUTE_ERROR}__}" />
+				<span th:text="${__${@itemisApplication.ATTRIBUTE_ERROR}__}" />
 			</div>
-			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_MESSAGE}__}">
+			<div class="form-group row" th:if="${__${@itemisApplication.ATTRIBUTE_MESSAGE}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.message}" />
-				<span th:text="${__${@errorController.ATTRIBUTE_MESSAGE}__}" />
+				<span th:text="${__${@itemisApplication.ATTRIBUTE_MESSAGE}__}" />
 			</div>
-			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_EXCEPTION}__}">
+			<div class="form-group row" th:if="${__${@itemisApplication.ATTRIBUTE_EXCEPTION}__}">
 				<label class="col-4 col-form-label text-right font-weight-bold" th:text="#{error.report.exception}" />
-				<span th:text="${__${@errorController.ATTRIBUTE_EXCEPTION}__}" />
+				<span th:text="${__${@itemisApplication.ATTRIBUTE_EXCEPTION}__}" />
 			</div>
-			<div class="form-group row" th:if="${__${@errorController.ATTRIBUTE_TRACE}__}">
+			<div class="form-group row" th:if="${__${@itemisApplication.ATTRIBUTE_TRACE}__}">
 				<label class="col-8 col-form-label text-right" th:text="#{error.report.trace}" />
 				<span th:utext="'&lt;!--'" th:remove="tag" />
 				
-				<span th:remove="tag" th:text="${__${@errorController.ATTRIBUTE_TRACE}__}" />
+				<span th:remove="tag" th:text="${__${@itemisApplication.ATTRIBUTE_TRACE}__}" />
 				
 				<span th:utext="'--&gt;'" th:remove="tag" />
 			</div>
@@ -45,7 +45,7 @@
 		<div class="alert alert-warning">
 	        <div th:if="${invalidOrExpired}" th:text="#{error.report.invalid.solution}" />
 	        <div th:unless="${invalidOrExpired}">
-	            <div th:switch="${__${@errorController.ATTRIBUTE_STATUS}__}">
+	            <div th:switch="${__${@itemisApplication.ATTRIBUTE_STATUS}__}">
                 	<p th:case="999" th:text="#{error.report.reload.solution}" />
                 	<p th:case="404" th:text="#{error.report.notfound.solution}" />
 	                <p th:case="*" th:text="#{error.report.support.solution}" />

@@ -23,11 +23,9 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.LocaleResolver;
 
-import hu.kispitye.itemis.controller.ErrorController;
-import hu.kispitye.itemis.controller.HomeController;
+import static hu.kispitye.itemis.ItemisConstants.*;
+
 import hu.kispitye.itemis.user.User;
-import hu.kispitye.itemis.user.controller.LoginController;
-import hu.kispitye.itemis.user.controller.RegisterController;
 import hu.kispitye.itemis.user.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +35,6 @@ import jakarta.servlet.http.HttpServletResponse;
 @Configuration
 @EnableWebSecurity
 public class Security implements AuthenticationSuccessHandler {
-	
-	public static final String ADMIN_ROLE = "ADMIN";
 	
 	private static final String ALLSUBPATHS = "/**";
 
@@ -59,19 +55,19 @@ public class Security implements AuthenticationSuccessHandler {
         return new BCryptPasswordEncoder();
     }
 
-	@Value("${"+LoginController.PATH_LOGIN+"}")
+	@Value("${"+PATH_LOGIN+"}")
 	private String loginPath;
     
-	@Value("${"+LoginController.PATH_LOGOUT+"}")
+	@Value("${"+PATH_LOGOUT+"}")
 	private String logoutPath;
     
-	@Value("${"+RegisterController.PATH_REGISTER+"}")
+	@Value("${"+PATH_REGISTER+"}")
 	private String registerPath;
     
-	@Value("${"+ErrorController.PATH_ERROR+"}")
+	@Value("${"+PATH_ERROR+"}")
 	private String errorPath;
     
-	@Value("${"+HomeController.PATH_ROOT+"}")
+	@Value("${"+PATH_ROOT+"}")
 	private String rootPath;
     
     @Bean
@@ -108,8 +104,8 @@ public class Security implements AuthenticationSuccessHandler {
                 ).sessionManagement(
                 		session -> session
                 			.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-	                		.invalidSessionUrl(errorPath+"?"+ErrorController.PARAM_INVALID)
-	                		.maximumSessions(1).expiredUrl(errorPath+"?"+ErrorController.PARAM_EXPIRED)
+	                		.invalidSessionUrl(errorPath+"?"+PARAM_INVALID)
+	                		.maximumSessions(1).expiredUrl(errorPath+"?"+PARAM_EXPIRED)
                 );
                 		
         return http.build();

@@ -24,8 +24,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private List<String> adminNames = new ArrayList<>();
 	
+	public static final String ADMIN_USERNAMES = "admin.usernames";
+	
     @Autowired
-    public void setAdminNames(@Value("#{'${admin.usernames:}'.split(',')}") List<String> adminNames) {
+    public void setAdminNames(@Value("#{'${"+ADMIN_USERNAMES+":}'.split(',')}") List<String> adminNames) {
     	for (String adminName:adminNames) this.adminNames.add(adminName.trim().toLowerCase());
     }
     
